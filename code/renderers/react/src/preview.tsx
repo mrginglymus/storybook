@@ -26,6 +26,27 @@ export function definePreview(preview: ReactPreview['input']) {
 }
 
 export interface ReactPreview extends Preview<ReactRenderer> {
+  // Prefer inferring args from render function if provided
+  meta<
+    TArgs extends Args,
+    Decorators extends DecoratorFunction<ReactRenderer, any>,
+    // Try to make Exact<Partial<TArgs>, TMetaArgs> work
+    TMetaArgs extends Partial<TArgs>,
+  >(
+    meta: {
+      render: ArgsStoryFn<ReactRenderer, TArgs>;
+      component?: ComponentType<NoInfer<TArgs>>;
+      decorators?: Decorators | Decorators[];
+      args?: TMetaArgs;
+    } & Omit<ComponentAnnotations<ReactRenderer, NoInfer<TArgs>>, 'decorators'>
+  ): ReactMeta<
+    {
+      args: Simplify<
+        NoInfer<TArgs> & Simplify<RemoveIndexSignature<DecoratorsArgs<ReactRenderer, Decorators>>>
+      >;
+    },
+    { args: Partial<NoInfer<TArgs>> extends TMetaArgs ? {} : TMetaArgs }
+  >;
   meta<
     TArgs extends Args,
     Decorators extends DecoratorFunction<ReactRenderer, any>,
