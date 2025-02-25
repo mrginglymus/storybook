@@ -17,7 +17,7 @@ import { expectTypeOf } from 'expect-type';
 import { definePreview } from './preview';
 import type { Decorator } from './public-types';
 
-type ButtonProps = { label: string; disabled: boolean };
+type ButtonProps = { label: string; disabled: boolean; onKeyDown?: KeyboardEventHandler };
 const Button: (props: ButtonProps) => ReactElement = () => <></>;
 
 const preview = definePreview({
@@ -215,6 +215,48 @@ describe('Story args can be inferred', () => {
 
     const Basic = meta.story({
       args: { decoratorArg: 0, decoratorArg2: '', label: 'good' },
+    });
+  });
+
+  it('Correct args are inferred when type is replaced in renderer', () => {
+    const meta = preview.meta({
+      component: Button,
+      args: { onKeyDown: false },
+      // This is a somewhat contrived example, but it's a convenient way of demonstrating a renderer
+      // where a property is replaced with an incompatible type.
+      // The pattern here is where a component has a non-primitive, optional prop. The user may wish
+      // to see the change in behaviour by adding/removing the prop, without particularly minding _what_
+      // the value of that prop is.
+      // Examples might include an optional icon (ReactNode), or as here, an event handler, the presence of which
+      // being a switch for behaviour
+      render: (
+        { onKeyDown, ...args }: Omit<ButtonProps, 'onKeyDown'> & { onKeyDown?: boolean },
+        { component }
+      ) => {
+        const Component = component!;
+        return <Component {...args} onKeyDown={onKeyDown ? () => {} : undefined} />;
+      },
+    });
+
+    const Basic = meta.story({ args: { disabled: false } });
+    const WithKeyDown = meta.story({ args: { disabled: false, onKeyDown: true } });
+  });
+
+  it('Correct args are inferred when type is replaced in renderer in story', () => {
+    const meta = preview.meta({
+      component: Button,
+      args: { label: 'Hello' },
+    });
+
+    const Basic = meta.story({
+      args: { disabled: false, onKeyDown: false },
+      render: (
+        { onKeyDown, ...args }: Omit<ButtonProps, 'onKeyDown'> & { onKeyDown?: boolean },
+        { component }
+      ) => {
+        const Component = component!;
+        return <Component {...args} onKeyDown={onKeyDown ? () => {} : undefined} />;
+      },
     });
   });
 });
