@@ -58,7 +58,7 @@ export interface ReactPreview extends Preview<ReactRenderer> {
 type DecoratorsArgs<TRenderer extends Renderer, Decorators> = UnionToIntersection<
   Decorators extends DecoratorFunction<TRenderer, infer TArgs> ? TArgs : unknown
 >;
-interface ReactMeta<
+export interface ReactMeta<
   Context extends { args: Args },
   MetaInput extends ComponentAnnotations<ReactRenderer>,
 > extends Meta<ReactRenderer, Context['args']> {
