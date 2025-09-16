@@ -89,6 +89,10 @@ export const sandbox: Task = {
       'uuid',
     ];
 
+    if (details.template.typeCheck) {
+      extraDeps.push('@types/chai');
+    }
+
     const shouldAddVitestIntegration = !details.template.skipTasks?.includes('vitest-integration');
 
     options.addon.push('@storybook/addon-a11y');

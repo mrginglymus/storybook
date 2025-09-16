@@ -18,7 +18,7 @@ import { JsPackageManagerFactory } from '../../code/core/src/common/js-package-m
 import storybookPackages from '../../code/core/src/common/versions';
 import type { ConfigFile } from '../../code/core/src/csf-tools';
 import { formatConfig, writeConfig } from '../../code/core/src/csf-tools';
-import type { TemplateKey } from '../../code/lib/cli-storybook/src/sandbox-templates';
+import type { Template, TemplateKey } from '../../code/lib/cli-storybook/src/sandbox-templates';
 import type { PassedOptionValues, Task, TemplateDetails } from '../task';
 import { executeCLIStep, steps } from '../utils/cli-step';
 import { CODE_DIRECTORY, REPROS_DIRECTORY } from '../utils/constants';
@@ -221,7 +221,7 @@ export const init: Task['run'] = async (
   }
 
   if (template.typeCheck) {
-    await prepareTypeChecking(cwd);
+    await prepareTypeChecking(cwd, template);
   }
 
   if (!skipTemplateStories) {
@@ -888,21 +888,29 @@ async function prepareReactNativeWebSandbox(cwd: string) {
  * 1. Add a typecheck script
  * 2. Ensure typescript compiler options compatible with our example code
  * 3. Set skipLibCheck to false to test storybook's public types
- *
- * This is currently configured for manipulating the output of `create vite` so will need some
- * adjustment when we extend to type checking webpack sandboxes (if we ever do).
  */
-async function prepareTypeChecking(cwd: string) {
+async function prepareTypeChecking(cwd: string, template: Template) {
   const packageJsonPath = join(cwd, 'package.json');
   const packageJson = await readJson(packageJsonPath);
 
+  const findTsConfigName = () => {
+    const createVitePath = join(cwd, 'tsconfig.app.json');
+    if (existsSync(createVitePath)) {
+      return 'tsconfig.app.json';
+    }
+    return 'tsconfig.json';
+  };
+
+  const tsConfigName = findTsConfigName();
+
   packageJson.scripts = {
     ...packageJson.scripts,
-    typecheck: 'yarn tsc -p tsconfig.app.json',
+    typecheck: `yarn ${template.modifications.tsc ?? 'tsc'} -p ${tsConfigName}`,
   };
+
   await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
 
-  const tsConfigPath = join(cwd, 'tsconfig.app.json');
+  const tsConfigPath = join(cwd, tsConfigName);
   const tsConfigContent = await readFile(tsConfigPath, { encoding: 'utf-8' });
   // This does not preserve comments, but that shouldn't be an issue for sandboxes
   const tsConfigJson = JSON5.parse(tsConfigContent);
@@ -915,6 +923,9 @@ async function prepareTypeChecking(cwd: string) {
   tsConfigJson.compilerOptions.noUnusedParameters = false;
   // Means we can check our own public types
   tsConfigJson.compilerOptions.skipLibCheck = false;
+
+  (tsConfigJson.compilerOptions.types ??= []).push('chai');
+
   await writeFile(tsConfigPath, JSON.stringify(tsConfigJson, null, 2));
 }
 

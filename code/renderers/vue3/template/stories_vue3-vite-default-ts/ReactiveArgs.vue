@@ -4,7 +4,7 @@
   </button>
 </template>
 
-<script>
+<script lang="ts">
 import { computed, ref } from 'vue';
 
 export default {

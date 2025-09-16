@@ -79,6 +79,8 @@ export type Template = {
     testBuild?: boolean;
     disableDocs?: boolean;
     extraDependencies?: string[];
+    /** Binary for running tsc */
+    tsc?: string;
     editAddons?: (addons: string[]) => string[];
     useCsfFactory?: boolean;
   };
@@ -418,6 +420,11 @@ export const baseTemplates = {
       builder: '@storybook/builder-vite',
     },
     skipTasks: ['bench'],
+    typeCheck: true,
+    modifications: {
+      extraDependencies: ['@types/react', '@types/pug'],
+      tsc: 'vue-tsc',
+    },
   },
   // 'nuxt-vite/default-ts': {
   //   name: 'Nuxt v3 (Vite | TypeScript)',
