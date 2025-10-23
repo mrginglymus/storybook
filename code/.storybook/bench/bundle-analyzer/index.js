@@ -1919,8 +1919,7 @@
           }
         }
       }
-      for (let o in i) {
-        let s = i[o];
+      for (let [o, s] of Object.entries(i).sort(([,a], [,b]) => b.reduce((acc, i) => acc + t[i].bytes, 0) - a.reduce((acc, i) => acc + t[i].bytes, 0))) {
         if (s.length > 1) {
           let n = m.createElement('div'),
             r = m.createElement('ul'),
@@ -1930,7 +1929,7 @@
             (n.innerHTML =
               'The import path <code>' +
               z(o) +
-              '</code> resolves to multiple files in the bundle:');
+              '</code> resolves to multiple files in the bundle: (<code>' + ae(s.reduce((acc, i) => acc + t[i].bytes, 0)) + '</code>)');
 
           for (let f of s) {
             l = Ue(f, l);
@@ -1939,7 +1938,7 @@
             let u = ge(f);
             l && (u = u.slice(l.length)), (a = Jt(u.join('/'), a));
           }
-          for (let f of s.sort()) {
+          for (let f of s.sort((a, b) => t[b].bytes - t[a].bytes)) {
             let u = ge(f).map(z),
               N = m.createElement('li'),
               H = '<pre><a href="javascript:void 0">',
@@ -1956,7 +1955,7 @@
                   u.slice(u.length - a.length).join('/') +
                   '</span>'),
                 (u.length -= a.length)),
-              (N.innerHTML = H + '<b>' + u.join('/') + '</b>' + x + '</a></pre>'),
+              (N.innerHTML = H + '<b>' + u.join('/') + '</b>' + x + '</a>' + ' (' + ae(t[f].bytes) + ')</pre>'),
               r.append(N),
               (N.querySelector('a').onclick = () => {
                 Oe(e, f, null);
