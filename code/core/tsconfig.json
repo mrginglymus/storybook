@@ -4,7 +4,8 @@
     "resolveJsonModule": true,
     "moduleResolution": "bundler",
     "module": "esnext",
-    "stripInternal": true
+    "stripInternal": true,
+    "types": ["@types/react-syntax-highlighter"]
   },
   "include": ["src/**/*", "scripts/**/*", "*.d.ts", "templates/runtime-build-code.template"]
 }

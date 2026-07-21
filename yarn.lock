@@ -11649,12 +11649,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-syntax-highlighter@npm:11.0.5":
-  version: 11.0.5
-  resolution: "@types/react-syntax-highlighter@npm:11.0.5"
+"@types/react-syntax-highlighter@npm:^15.5.13":
+  version: 15.5.13
+  resolution: "@types/react-syntax-highlighter@npm:15.5.13"
   dependencies:
     "@types/react": "npm:*"
-  checksum: 10c0/f4aa5ae5d1e877946fd7667aa9fa27c1cbba23bbe2b4301933df70d7b5ee9c207c6ecdb19681916b57bf190e4c0f7803fce4e5359fa9a3548f7b100ee4508311
+  checksum: 10c0/e3bca325b27519fb063d3370de20d311c188ec16ffc01e5bc77bdf2d7320756725ee3d0246922cd5d38b75c5065a1bc43d0194e92ecf6556818714b4ffb0967a
   languageName: node
   linkType: hard
 
@@ -31207,7 +31207,7 @@ __metadata:
     "@types/prettier": "npm:^3.0.0"
     "@types/pretty-hrtime": "npm:^1.0.0"
     "@types/prompts": "npm:^2.0.9"
-    "@types/react-syntax-highlighter": "npm:11.0.5"
+    "@types/react-syntax-highlighter": "npm:^15.5.13"
     "@types/semver": "npm:^7.7.1"
     "@types/ws": "npm:^8"
     "@vitest/expect": "npm:3.2.4"
