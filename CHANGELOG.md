@@ -1,3 +1,7 @@
+## 10.5.4
+
+- Dependencies: Upgrade TypeScript to 6.0.3 - [#34971](https://github.com/storybookjs/storybook/pull/34971), thanks @valentinpalkovic!
+
 ## 10.5.3
 
 - Dependencies: Upgrade TypeScript to 6.0.3 - [#34971](https://github.com/storybookjs/storybook/pull/34971), thanks @valentinpalkovic!
