@@ -1,3 +1,4 @@
+import type { PreviewAddon } from 'storybook/internal/csf';
 import { definePreviewAddon } from 'storybook/internal/csf';
 
 import { PARAM_KEY } from './constants.ts';
@@ -9,7 +10,7 @@ export const initialGlobals: Record<string, GlobalState> = {
 
 export type { ViewportGlobals, ViewportTypes };
 
-export default () =>
+export default (): PreviewAddon<ViewportTypes> =>
   definePreviewAddon<ViewportTypes>({
     initialGlobals,
   });

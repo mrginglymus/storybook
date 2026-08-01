@@ -67,6 +67,9 @@ const noInputSchema = v.undefined();
 
 export type { ModuleGraphServiceState } from './types.ts';
 
+/**
+ * @internal
+ */
 export const moduleGraphServiceDef = defineService({
   id: 'core/module-graph',
   description:

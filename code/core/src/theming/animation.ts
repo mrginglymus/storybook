@@ -52,7 +52,14 @@ const hoverable: SerializedStyles = css`
   }
 `;
 
-export const animation = {
+export const animation: {
+  readonly rotate360: Keyframes;
+  readonly glow: Keyframes;
+  readonly float: Keyframes;
+  readonly jiggle: Keyframes;
+  readonly inlineGlow: SerializedStyles;
+  readonly hoverable: SerializedStyles;
+} = {
   rotate360,
   glow,
   float,

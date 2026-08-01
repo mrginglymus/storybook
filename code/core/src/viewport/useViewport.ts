@@ -7,7 +7,14 @@ import { useGlobals, useParameter, useStorybookApi } from 'storybook/manager-api
 import { ADDON_ID, PARAM_KEY } from './constants.ts';
 import { MINIMAL_VIEWPORTS } from './defaults.ts';
 import { VIEWPORT_MIN_HEIGHT, VIEWPORT_MIN_WIDTH, resolveViewport } from './resolveViewport.ts';
-import type { GlobalState, GlobalStateUpdate, ViewportMap, ViewportParameters } from './types.ts';
+import type {
+  GlobalState,
+  GlobalStateUpdate,
+  Viewport,
+  ViewportMap,
+  ViewportParameters,
+  ViewportType,
+} from './types.ts';
 
 export { VIEWPORT_MIN_HEIGHT, VIEWPORT_MIN_WIDTH };
 
@@ -34,7 +41,24 @@ const normalizeGlobal = (
     ? { value, isRotated: defaultIsRotated }
     : { value: value?.value, isRotated: value?.isRotated ?? defaultIsRotated };
 
-export const useViewport = () => {
+export const useViewport = (): {
+  name: string;
+  type: ViewportType;
+  width: string;
+  height: string;
+  value: string;
+  option: string | undefined;
+  isCustom: boolean;
+  isDefault: boolean;
+  isLocked: boolean;
+  isRotated: boolean;
+  options: ViewportMap;
+  lastSelectedOption: string | undefined;
+  resize: (width: string, height: string) => void;
+  reset: () => void;
+  rotate: () => void;
+  select: (value: string) => void;
+} => {
   const api = useStorybookApi();
   const { viewMode } = api.getUrlState();
 
@@ -105,13 +129,21 @@ export const useViewport = () => {
       label: 'Next viewport',
       defaultShortcut: ['alt', 'V'],
       actionName: 'next',
-      action: () => update({ value: cycle(options, lastSelectedOption.current), isRotated }),
+      action: () =>
+        update({
+          value: cycle(options, lastSelectedOption.current),
+          isRotated,
+        }),
     });
     api.setAddonShortcut(ADDON_ID, {
       label: 'Previous viewport',
       defaultShortcut: ['alt', 'shift', 'V'],
       actionName: 'previous',
-      action: () => update({ value: cycle(options, lastSelectedOption.current, -1), isRotated }),
+      action: () =>
+        update({
+          value: cycle(options, lastSelectedOption.current, -1),
+          isRotated,
+        }),
     });
     api.setAddonShortcut(ADDON_ID, {
       label: 'Reset viewport',

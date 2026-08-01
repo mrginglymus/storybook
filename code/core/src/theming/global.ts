@@ -35,7 +35,7 @@ export const srOnlyUnsetStyles = {
   border: 'unset' as const,
 };
 
-export const createReset = memoize(1)(
+export const createReset: (options: { typography: Typography }) => Return = memoize(1)(
   ({ typography }: { typography: Typography }): Return => ({
     body: {
       fontFamily: typography.fonts.base,
@@ -111,7 +111,11 @@ export const createReset = memoize(1)(
   })
 );
 
-export const createGlobal = memoize(1)(({
+export const createGlobal: (options: {
+  color: Color;
+  background: Background;
+  typography: Typography;
+}) => Return = memoize(1)(({
   color,
   background,
   typography,

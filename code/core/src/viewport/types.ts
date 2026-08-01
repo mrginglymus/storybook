@@ -49,7 +49,7 @@ export interface ViewportParameters {
      * Specify the available viewports. The width and height values must include the unit, e.g.
      * '320px'.
      */
-    options: Record<string, Viewport>;
+    options: ViewportMap;
   };
 }
 

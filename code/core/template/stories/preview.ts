@@ -1,4 +1,9 @@
-import type { GlobalTypes, PartialStoryFn, StoryContext } from 'storybook/internal/types';
+import type {
+  DecoratorFunction,
+  GlobalTypes,
+  PartialStoryFn,
+  StoryContext,
+} from "storybook/internal/types";
 
 declare global {
   interface Window {
@@ -20,7 +25,7 @@ try {
   // ignore
 }
 
-export const beforeAll = async () => {
+export const beforeAll = async (): Promise<() => void> => {
   let cleanup: () => void = () => {};
   try {
     globalThis.parent.__STORYBOOK_BEFORE_ALL_CALLS__ += 1;
@@ -42,7 +47,7 @@ export const parameters = {
   },
 };
 
-export const loaders = [async () => ({ projectValue: 2 })];
+export const loaders: (() => Promise<unknown>)[] = [async () => ({ projectValue: 2 })];
 
 const testProjectDecorator = (storyFn: PartialStoryFn, context: StoryContext) => {
   if (context.parameters.useProjectDecorator) {
@@ -51,7 +56,7 @@ const testProjectDecorator = (storyFn: PartialStoryFn, context: StoryContext) =>
   return storyFn();
 };
 
-export const decorators = [testProjectDecorator];
+export const decorators: DecoratorFunction[] = [testProjectDecorator];
 
 export const initialGlobals = {
   foo: 'fooValue',
@@ -62,7 +67,7 @@ export const initialGlobals = {
   locale: 'en',
 };
 
-export const globalTypes = {
+export const globalTypes: GlobalTypes = {
   sb_theme: {
     name: 'Theme',
     description: 'Global theme for components',

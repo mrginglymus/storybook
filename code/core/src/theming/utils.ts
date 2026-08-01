@@ -6,7 +6,7 @@ import { darken, lighten, rgba } from 'polished';
 
 const { window: globalWindow } = global;
 
-export const mkColor = (color: string) => ({ color });
+export const mkColor: (color: string) => { color: string } = (color: string) => ({ color });
 
 // Check if it is a string. This is for the sake of warning users
 // and the successive guarding logics that use String methods.
@@ -41,29 +41,31 @@ const applyPolished = (type: string, color: string) => {
   return color;
 };
 
-const colorFactory = (type: string) => (color: string) => {
-  if (!isColorString(color)) {
-    return color;
-  }
+const colorFactory =
+  (type: string) =>
+  (color: string): string => {
+    if (!isColorString(color)) {
+      return color;
+    }
 
-  if (!isValidColorForPolished(color)) {
-    return color;
-  }
+    if (!isValidColorForPolished(color)) {
+      return color;
+    }
 
-  // Guard anything that is not working with polished.
-  try {
-    return applyPolished(type, color);
-  } catch (error) {
-    return color;
-  }
-};
+    // Guard anything that is not working with polished.
+    try {
+      return applyPolished(type, color);
+    } catch (error) {
+      return color;
+    }
+  };
 
-export const lightenColor = colorFactory('lighten');
-export const darkenColor = colorFactory('darken');
+export const lightenColor: (color: string) => string = colorFactory('lighten');
+export const darkenColor: (color: string) => string = colorFactory('darken');
 
 // The default color scheme is light so unless the preferred color
 // scheme is set to dark we always want to use the light theme
-export const getPreferredColorScheme = () => {
+export const getPreferredColorScheme = (): 'light' | 'dark' => {
   if (!globalWindow || !globalWindow.matchMedia) {
     return 'light';
   }
