@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Button } from 'storybook/internal/components';
 
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 import { Brand } from './Brand.tsx';
 import type { MenuList, SidebarMenuProps } from './Menu.tsx';
@@ -38,7 +38,10 @@ const BrandArea = styled.div(({ theme }) => ({
   },
 }));
 
-const HeadingWrapper = styled.div({
+const HeadingWrapper: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',

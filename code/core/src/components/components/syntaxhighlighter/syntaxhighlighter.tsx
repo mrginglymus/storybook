@@ -37,7 +37,19 @@ import type {
 // which declaration emit and type bundlers cannot reference by specifier.
 const ReactSyntaxHighlighter: typeof PrismLight = ReactSyntaxHighlighterRuntime;
 
-export const supportedLanguages = {
+export const supportedLanguages: {
+  jsextra: any;
+  jsx: any;
+  json: any;
+  yml: any;
+  md: any;
+  bash: any;
+  css: any;
+  html: any;
+  tsx: any;
+  typescript: any;
+  graphql: any;
+} = {
   jsextra: jsExtras,
   jsx,
   json,
@@ -182,7 +194,7 @@ const wrapRenderer = (
 
 // copied from @types/react-syntax-highlighter/index.d.ts
 
-export const SyntaxHighlighter = ({
+export const SyntaxHighlighter: { ({ children, language, copyable, bordered, padded, format, formatter, className, showLineNumbers, ...rest }: SyntaxHighlighterProps): React.JSX.Element | null; registerLanguage(name: string, func: any): void; } = ({
   children,
   language = 'jsx',
   copyable = false,
@@ -193,7 +205,7 @@ export const SyntaxHighlighter = ({
   className = undefined,
   showLineNumbers = false,
   ...rest
-}: SyntaxHighlighterProps) => {
+}: SyntaxHighlighterProps): React.JSX.Element | null => {
   if (typeof children !== 'string' || !children.trim()) {
     return null;
   }
@@ -254,6 +266,6 @@ export const SyntaxHighlighter = ({
 
 SyntaxHighlighter.registerLanguage = (
   ...args: Parameters<typeof ReactSyntaxHighlighter.registerLanguage>
-) => ReactSyntaxHighlighter.registerLanguage(...args);
+): void => ReactSyntaxHighlighter.registerLanguage(...args);
 
 export default SyntaxHighlighter;

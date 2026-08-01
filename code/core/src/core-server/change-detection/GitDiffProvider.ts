@@ -39,7 +39,7 @@ export class GitDiffProvider {
   private watchingStopped = false;
 
   constructor(
-    private readonly cwd = process.cwd(),
+    private readonly cwd: string = process.cwd(),
     private readonly fileSystem: GitFileSystem = { watch, readFile, stat }
   ) {}
 

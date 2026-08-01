@@ -1,6 +1,7 @@
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 import { withReset } from './lib/common.tsx';
+import { DetailedHTMLProps, HTMLAttributes } from 'react';
 
 /**
  * This is a "local" reset to style subtrees with Storybook styles
@@ -9,4 +10,7 @@ import { withReset } from './lib/common.tsx';
  * high, so those styles can too easily override child elements that are not expecting it.
  */
 
-export const ResetWrapper = styled.div(withReset);
+export const ResetWrapper: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div(withReset);

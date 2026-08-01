@@ -166,7 +166,7 @@ export const EmptyBlock = ({
   isMain: boolean;
   hasEntries: boolean;
   activeFilterCount: number;
-}) => {
+}): React.JSX.Element => {
   const api = useStorybookApi();
 
   return (

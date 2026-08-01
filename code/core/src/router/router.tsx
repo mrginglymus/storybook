@@ -42,7 +42,7 @@ interface RoutePropsDefault {
 
 const getBase = () => `${document.location.pathname}?`;
 
-export const useNavigate = () => {
+export const useNavigate = (): (to: R.To | number, { plain, ...options }?: NavigateOptions) => void => {
   const navigate = R.useNavigate();
 
   return useCallback((to: R.To | number, { plain, ...options } = {} as NavigateOptions) => {
@@ -67,7 +67,10 @@ export const useNavigate = () => {
 };
 
 /** A component that will navigate to a new location/path when clicked */
-export const Link = ({ to, children, ...rest }: LinkProps) => (
+export const Link: {
+  ({ to, children, ...rest }: LinkProps): React.JSX.Element;
+  displayName: string;
+} = ({ to, children, ...rest }: LinkProps): React.JSX.Element => (
   <R.Link to={`${getBase()}path=${to}`} {...rest}>
     {children}
   </R.Link>
@@ -78,7 +81,10 @@ Link.displayName = 'QueryLink';
  * A render-prop component where children is called with a location and will be called whenever it
  * changes
  */
-export const Location = ({ children }: LocationProps) => {
+export const Location: {
+  ({ children }: LocationProps): React.JSX.Element;
+  displayName: string;
+} = ({ children }: LocationProps): React.JSX.Element => {
   const location = R.useLocation();
   const { path = '', singleStory } = queryFromLocation(location);
   const { viewMode, storyId, refId } = parsePath(path);
@@ -104,6 +110,9 @@ Location.displayName = 'QueryLocation';
  * path is hit.
  */
 function Match(props: MatchPropsStartsWith): ReactElement;
+declare namespace Match {
+  export var displayName: string;
+}
 function Match(props: MatchPropsDefault): ReactElement;
 function Match({
   children,
@@ -125,6 +134,9 @@ Match.displayName = 'QueryMatch';
 
 /** A component to conditionally render children based on matching a target path */
 function Route(props: RoutePropsDefault): ReactElement;
+declare namespace Route {
+  export var displayName: string;
+}
 function Route(props: RoutePropsStartsWith): ReactElement;
 function Route(input: RoutePropsDefault | RoutePropsStartsWith) {
   const { children, ...rest } = input;

@@ -1,9 +1,13 @@
-import type { CSSObject } from 'storybook/theming';
+import type { CSSObject, Theme, StyledComponent } from 'storybook/theming';
 import { styled } from 'storybook/theming';
 
 import { withMargin, withReset } from '../lib/common.tsx';
+import { DetailedHTMLProps, TableHTMLAttributes } from 'react';
 
-export const Table = styled.table(({ theme }) => ({
+export const Table: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, DetailedHTMLProps<TableHTMLAttributes<HTMLTableElement>, HTMLTableElement>, {}> = styled.table(({ theme }) => ({
   ...(withReset({ theme }) as CSSObject),
   ...withMargin,
   fontSize: theme.typography.size.s2,

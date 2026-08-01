@@ -1,20 +1,36 @@
 import type { Channel } from 'storybook/internal/channels';
 import { isStory } from 'storybook/internal/csf';
 import type {
+  ComponentTitle,
+  ComponentId,
+  CleanupCallback,
+  Canvas,
+  ArgsStoryFn,
+  Args,
   CSFFile,
+  LegacyStoryFn,
+  GlobalTypes,
+  Globals,
   ModuleExport,
   ModuleExports,
+  Parameters,
+  NormalizedProjectAnnotations,
   PreparedStory,
   Renderer,
+  RenderToCanvas,
   ResolvedModuleExportFromType,
   ResolvedModuleExportType,
+  StoryContext,
+  StepRunner,
   StoryId,
-  StoryName,
+  StoryName
+  Tag,
+  StrictArgTypes,,
 } from 'storybook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
-import { type StoryStore } from '../../store/index.ts';
+import { ReporterAPI, type StoryStore } from '../../store/index.ts';
 import type { DocsContextProps } from './DocsContextProps.ts';
 
 export class DocsContext<TRenderer extends Renderer> implements DocsContextProps<TRenderer> {
@@ -58,7 +74,7 @@ export class DocsContext<TRenderer extends Renderer> implements DocsContextProps
   // This docs entry references this CSF file and can synchronously load the stories, as well
   // as reference them by module export. If the CSF is part of the "component" stories, they
   // can also be referenced by name and are in the componentStories list.
-  referenceCSFFile(csfFile: CSFFile<TRenderer>) {
+  referenceCSFFile(csfFile: CSFFile<TRenderer>): void {
     this.exportsToCSFFile.set(csfFile.moduleExports, csfFile);
     // Also set the default export as the component's exports,
     // to allow `import ButtonStories from './Button.stories'`.
@@ -76,7 +92,7 @@ export class DocsContext<TRenderer extends Renderer> implements DocsContextProps
     });
   }
 
-  attachCSFFile(csfFile: CSFFile<TRenderer>) {
+  attachCSFFile(csfFile: CSFFile<TRenderer>): void {
     if (!this.exportsToCSFFile.has(csfFile.moduleExports)) {
       throw new Error('Cannot attach a CSF file that has not been referenced');
     }
@@ -99,7 +115,7 @@ export class DocsContext<TRenderer extends Renderer> implements DocsContextProps
     });
   }
 
-  referenceMeta(metaExports: ModuleExports, attach: boolean) {
+  referenceMeta(metaExports: ModuleExports, attach: boolean): void {
     const resolved = this.resolveModuleExport(metaExports);
 
     if (resolved.type !== 'meta') {
@@ -113,7 +129,7 @@ export class DocsContext<TRenderer extends Renderer> implements DocsContextProps
     }
   }
 
-  get projectAnnotations() {
+  get projectAnnotations(): NormalizedProjectAnnotations<TRenderer> {
     const { projectAnnotations } = this.store;
     if (!projectAnnotations) {
       throw new Error("Can't get projectAnnotations from DocsContext before they are initialized");
@@ -272,7 +288,7 @@ export class DocsContext<TRenderer extends Renderer> implements DocsContextProps
     }
   }
 
-  storyIdByName = (storyName: StoryName) => {
+  storyIdByName = (storyName: StoryName): string => {
     const storyId = this.nameToStoryId.get(storyName);
 
     if (storyId) {
@@ -282,11 +298,11 @@ export class DocsContext<TRenderer extends Renderer> implements DocsContextProps
     throw new Error(`No story found with that name: ${storyName}`);
   };
 
-  componentStories = () => {
+  componentStories = (): PreparedStory<TRenderer>[] => {
     return this.componentStoriesValue;
   };
 
-  getComponentId = (component: Renderer['component']) => {
+  getComponentId = (component: Renderer['component']): string | undefined => {
     for (const csfFile of new Set(this.exportsToCSFFile.values())) {
       if (csfFile.meta.component === component) {
         return csfFile.meta.id;
@@ -295,11 +311,11 @@ export class DocsContext<TRenderer extends Renderer> implements DocsContextProps
     return undefined;
   };
 
-  componentStoriesFromCSFFile = (csfFile: CSFFile<TRenderer>) => {
+  componentStoriesFromCSFFile = (csfFile: CSFFile<TRenderer>): PreparedStory<TRenderer>[] => {
     return this.store.componentStoriesFromCSFFile({ csfFile });
   };
 
-  storyById = (storyId?: StoryId) => {
+  storyById = (storyId?: StoryId): PreparedStory<TRenderer> => {
     if (!storyId) {
       if (!this.primaryStory) {
         throw new Error(
@@ -317,7 +333,15 @@ export class DocsContext<TRenderer extends Renderer> implements DocsContextProps
     return this.store.storyFromCSFFile({ storyId, csfFile });
   };
 
-  getStoryContext = (story: PreparedStory<TRenderer>) => {
+  getStoryContext = (story: PreparedStory<TRenderer>): {
+    loaded: {}; viewMode: string; args: Args; initialGlobals: Globals; globalTypes: GlobalTypes | undefined; userGlobals: Globals; reporting: ReporterAPI; globals: {
+      [x: string]: any;
+    }; hooks: unknown; component?: (TRenderer & {
+      T: any;
+    })["component"] | undefined; subcomponents?: Record<string, (TRenderer & {
+      T: any;
+    })["component"]> | undefined; parameters: Parameters; initialArgs: Args; argTypes: StrictArgTypes<Args>; componentId: ComponentId; title: ComponentTitle; kind: ComponentTitle; id: StoryId; name: StoryName; story: StoryName; tags: Tag[]; moduleExport: ModuleExport; originalStoryFn: ArgsStoryFn<TRenderer>; undecoratedStoryFn: LegacyStoryFn<TRenderer>; unboundStoryFn: LegacyStoryFn<TRenderer>; applyLoaders: (context: StoryContext<TRenderer, Args>) => Promise<Record<string, any>>; applyBeforeEach: (context: StoryContext<TRenderer, Args>) => Promise<CleanupCallback[]>; applyAfterEach: (context: StoryContext<TRenderer, Args>) => Promise<void>; playFunction?: ((context: StoryContext<TRenderer, Args>) => Promise<void> | void) | undefined; runStep: StepRunner<TRenderer>; mount: (context: StoryContext<TRenderer, Args>) => () => Promise<Canvas>; testingLibraryRender?: (...args: never[]) => unknown; renderToCanvas?: RenderToCanvas<TRenderer> | undefined; usesMount: boolean; storyGlobals: Globals; allArgs: any; argsByTarget: any; unmappedArgs: any;
+  } => {
     return {
       ...this.store.getStoryContext(story),
       loaded: {},
@@ -325,7 +349,7 @@ export class DocsContext<TRenderer extends Renderer> implements DocsContextProps
     };
   };
 
-  loadStory = (id: StoryId) => {
+  loadStory = (id: StoryId): Promise<PreparedStory<TRenderer>> => {
     return this.store.loadStory({ storyId: id });
   };
 }

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
-export const LocationMonitor = {
+export const LocationMonitor: { _currentHref: string; _intervalId: ReturnType<typeof setInterval> | null; _listeners: Set<(location: Location) => void>; start(): void; stop(): void; subscribe(...listeners: Array<(location: Location) => void>): () => void; } = {
   _currentHref: globalThis.window?.location.href ?? '',
   _intervalId: null as ReturnType<typeof setInterval> | null,
   _listeners: new Set<(location: Location) => void>(),
 
-  start() {
+  start(): void {
     if (this._intervalId === null) {
       this._intervalId = setInterval(() => {
         const newLocation = globalThis.window.location;
@@ -17,7 +17,7 @@ export const LocationMonitor = {
     }
   },
 
-  stop() {
+  stop(): void {
     if (this._intervalId !== null) {
       clearInterval(this._intervalId);
       this._intervalId = null;
@@ -27,7 +27,7 @@ export const LocationMonitor = {
   subscribe(...listeners: Array<(location: Location) => void>) {
     listeners.forEach((listener) => this._listeners.add(listener));
     this.start();
-    return () => {
+    return (): void => {
       listeners.forEach((listener) => this._listeners.delete(listener));
       if (this._listeners.size === 0) {
         this.stop();
@@ -36,7 +36,7 @@ export const LocationMonitor = {
   },
 };
 
-export const useLocationHash = () => {
+export const useLocationHash = (): string => {
   const [hash, setHash] = useState(globalThis.window?.location.hash ?? '');
   useEffect(() => LocationMonitor.subscribe((location) => setHash(location.hash)), []);
   return hash.slice(1);

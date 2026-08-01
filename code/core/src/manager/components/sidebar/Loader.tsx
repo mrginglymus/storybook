@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React, { Fragment } from 'react';
 
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 const LOADER_SEQUENCE = [0, 0, 1, 1, 2, 3, 3, 3, 1, 1, 1, 2, 2, 2, 3];
 
@@ -27,7 +27,10 @@ const Loadingitem = styled.div<{
   })
 );
 
-export const Contained = styled.div({
+export const Contained: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div({
   display: 'flex',
   flexDirection: 'column',
   paddingLeft: 20,

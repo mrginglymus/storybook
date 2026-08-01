@@ -114,7 +114,7 @@ function createLogger<T extends (...args: any[]) => void>(
   logFn: T,
   prefix?: string
 ) {
-  return function logFunction(...args: Parameters<T>) {
+  return function logFunction(...args: Parameters<T>): void {
     const [message, ...rest] = args;
     const msg = formatLogMessage([message]);
     logTracker.addLog(level, msg);
@@ -133,7 +133,7 @@ function createLogger<T extends (...args: any[]) => void>(
  * For detailed information useful for debugging, which is hidden by default and only appears in log
  * files or when the log level is set to debug
  */
-export const debug = createLogger(
+export const debug: (message: any) => void = createLogger(
   'debug',
   function logFunction(message) {
     if (shouldLog('trace')) {
@@ -147,17 +147,17 @@ export const debug = createLogger(
 type LogFunctionArgs<T extends (...args: any[]) => any> = Parameters<ReturnType<T>>;
 
 /** For general information that should always be visible to the user */
-export const log = createLogger('info', (...args: LogFunctionArgs<typeof LOG_FUNCTIONS.log>) =>
+export const log: (message?: string | string[] | undefined, args_1?: clack.LogMessageOptions | undefined) => void = createLogger('info', (...args: LogFunctionArgs<typeof LOG_FUNCTIONS.log>) =>
   LOG_FUNCTIONS.log()(...args)
 );
 /** For general information that should catch the user's attention */
-export const info = createLogger('info', (...args: LogFunctionArgs<typeof LOG_FUNCTIONS.info>) =>
+export const info: (message: string, opts?: clack.LogMessageOptions | undefined) => void = createLogger('info', (...args: LogFunctionArgs<typeof LOG_FUNCTIONS.info>) =>
   LOG_FUNCTIONS.info()(...args)
 );
-export const warn = createLogger('warn', (...args: LogFunctionArgs<typeof LOG_FUNCTIONS.warn>) =>
+export const warn: (message: string, opts?: clack.LogMessageOptions | undefined) => void = createLogger('warn', (...args: LogFunctionArgs<typeof LOG_FUNCTIONS.warn>) =>
   LOG_FUNCTIONS.warn()(...args)
 );
-export const error = createLogger('error', (...args: LogFunctionArgs<typeof LOG_FUNCTIONS.error>) =>
+export const error: (message: string, opts?: clack.LogMessageOptions | undefined) => void = createLogger('error', (...args: LogFunctionArgs<typeof LOG_FUNCTIONS.error>) =>
   LOG_FUNCTIONS.error()(...args)
 );
 
@@ -165,7 +165,7 @@ export type BoxOptions = {
   title?: string;
 } & clack.BoxOptions;
 
-export const logBox = (message: string, { title, ...options }: BoxOptions = {}) => {
+export const logBox = (message: string, { title, ...options }: BoxOptions = {}): void => {
   try {
     if (shouldLog('info')) {
       logTracker.addLog('info', message);
@@ -189,7 +189,7 @@ export const logBox = (message: string, { title, ...options }: BoxOptions = {}) 
   }
 };
 
-export const intro = (message: string) => {
+export const intro = (message: string): void => {
   logTracker.addLog('info', message);
   if (shouldLog('info')) {
     console.log('');
@@ -197,21 +197,24 @@ export const intro = (message: string) => {
   }
 };
 
-export const outro = (message: string) => {
+export const outro = (message: string): void => {
   logTracker.addLog('info', message);
   if (shouldLog('info')) {
     LOG_FUNCTIONS.outro()(message);
   }
 };
 
-export const step = (message: string) => {
+export const step = (message: string): void => {
   logTracker.addLog('info', message);
   if (shouldLog('info')) {
     LOG_FUNCTIONS.step()(message);
   }
 };
 
-export const SYMBOLS = {
+export const SYMBOLS: {
+  success: string;
+  error: string;
+} = {
   success: CLI_COLORS.success('✔'),
   error: CLI_COLORS.error('✕'),
 };

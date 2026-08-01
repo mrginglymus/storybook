@@ -11,7 +11,7 @@ import {
   shortcutMatchesShortcut,
   shortcutToHumanString,
 } from 'storybook/manager-api';
-import { keyframes, styled } from 'storybook/theming';
+import { keyframes, styled, Theme, StyledComponent } from 'storybook/theming';
 
 import SettingsFooter from './SettingsFooter.tsx';
 
@@ -24,11 +24,17 @@ const Header = styled.header(({ theme }) => ({
 }));
 
 // Grid
-export const HeaderItem = styled.div(({ theme }) => ({
+export const HeaderItem: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div(({ theme }) => ({
   fontWeight: theme.typography.weight.bold,
 }));
 
-export const GridHeaderRow = styled.div({
+export const GridHeaderRow: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div({
   alignSelf: 'flex-end',
   display: 'grid',
   margin: '10px 0',
@@ -40,14 +46,20 @@ export const GridHeaderRow = styled.div({
   },
 });
 
-export const Row = styled.div(({ theme }) => ({
+export const Row: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div(({ theme }) => ({
   padding: '6px 0',
   borderTop: `1px solid ${theme.appBorderColor}`,
   display: 'grid',
   gridTemplateColumns: '1fr 1fr 0px',
 }));
 
-export const GridWrapper = styled.div({
+export const GridWrapper: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div({
   display: 'grid',
   gridTemplateColumns: '1fr',
   gridAutoRows: 'minmax(auto, auto)',
@@ -55,7 +67,10 @@ export const GridWrapper = styled.div({
 });
 
 // Form
-export const Description = styled.div({
+export const Description: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div({
   alignSelf: 'center',
 });
 
@@ -83,7 +98,12 @@ export const TextInput: FC<
   }
 );
 
-export const Fade = keyframes`
+export const Fade: {
+  name: string;
+  styles: string;
+  anim: 1;
+  toString: () => string;
+} & string = keyframes`
 0%,100% { opacity: 0; }
   50% { opacity: 1; }
 `;
@@ -197,7 +217,7 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
     };
   }
 
-  onKeyDown = (e: KeyboardEvent) => {
+  onKeyDown = (e: KeyboardEvent): false | void | Promise<void> => {
     const { activeFeature, shortcutKeys } = this.state;
 
     if (e.key === 'Backspace') {
@@ -229,7 +249,7 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
     });
   };
 
-  onFocus = (focusedInput: Feature) => () => {
+  onFocus = (focusedInput: Feature) => (): void => {
     const { shortcutKeys } = this.state;
 
     this.setState({
@@ -241,7 +261,7 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
     });
   };
 
-  onBlur = async () => {
+  onBlur = async (): Promise<false | void> => {
     const { shortcutKeys, activeFeature } = this.state;
 
     if (shortcutKeys[activeFeature]) {
@@ -254,7 +274,7 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
     return false;
   };
 
-  saveShortcut = async () => {
+  saveShortcut = async (): Promise<void> => {
     const { activeFeature, shortcutKeys } = this.state;
 
     const { setShortcut } = this.props;
@@ -262,14 +282,14 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
     this.setState({ successField: activeFeature });
   };
 
-  restoreDefaults = async () => {
+  restoreDefaults = async (): Promise<void> => {
     const { restoreAllDefaultShortcuts } = this.props;
 
     const defaultShortcuts = await restoreAllDefaultShortcuts();
     return this.setState({ shortcutKeys: toShortcutState(defaultShortcuts) });
   };
 
-  restoreDefault = async () => {
+  restoreDefault = async (): Promise<void> => {
     const { activeFeature, shortcutKeys } = this.state;
 
     const { restoreDefaultShortcut } = this.props;
@@ -283,7 +303,7 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
     });
   };
 
-  displaySuccessMessage = (activeElement: Feature) => {
+  displaySuccessMessage = (activeElement: Feature): "valid" | undefined => {
     const { successField, shortcutKeys } = this.state;
     return activeElement === successField && shortcutKeys[activeElement].error === false
       ? 'valid'
@@ -297,7 +317,7 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
       : undefined;
   };
 
-  renderKeyInput = () => {
+  renderKeyInput = (): React.JSX.Element[] => {
     const { shortcutKeys, addonsShortcutLabels } = this.state;
     // Filter out keyboard shortcuts from localStorage that no longer exist in code
     const availableShortcuts = (Object.entries(shortcutKeys) as [Feature, any][]).filter(
@@ -350,7 +370,7 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
     return arr;
   };
 
-  renderKeyForm = () => (
+  renderKeyForm = (): React.JSX.Element => (
     <GridWrapper>
       <GridHeaderRow>
         <HeaderItem>Commands</HeaderItem>
@@ -360,7 +380,7 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
     </GridWrapper>
   );
 
-  render() {
+  render(): React.JSX.Element {
     const layout = this.renderKeyForm();
     return (
       <Container>

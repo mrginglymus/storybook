@@ -71,13 +71,20 @@ export * from './lib/request-response.ts';
 export * from './lib/platform.ts';
 export * from './lib/shortcut.ts';
 
-const { ActiveTabs } = layout;
+const ActiveTabs: {
+  SIDEBAR: "sidebar";
+  CANVAS: "canvas";
+  ADDONS: "addons";
+} = layout.ActiveTabs;
 
 export { default as merge } from './lib/merge.ts';
 export type { Options as StoreOptions, Listener as ChannelListener };
 export { ActiveTabs };
 
-export const ManagerContext = createContext({ api: undefined!, state: getInitialState({}!) });
+export const ManagerContext: React.Context<{
+  api: API;
+  state: State;
+}> = createContext({ api: undefined!, state: getInitialState({}!) });
 
 export type State = layout.SubState &
   stories.SubState &
@@ -124,7 +131,7 @@ export type ManagerProviderProps = RouterData &
   };
 
 // This is duplicated from storybook/preview-api for the reasons mentioned in lib-addons/types.js
-export const combineParameters = (...parameterSets: Parameters[]) =>
+export const combineParameters = (...parameterSets: Parameters[]): {} =>
   noArrayMerge({}, ...parameterSets);
 
 class ManagerProvider extends Component<ManagerProviderProps, State> {
@@ -219,7 +226,7 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
     props.provider.handleAPI(this.api);
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.mounted = true;
   }
 
@@ -247,7 +254,7 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
     return prevProps.path !== nextProps.path || !isEqual(prevState, nextState);
   }
 
-  initModules = () => {
+  initModules = (): void => {
     // Now every module has had a chance to set its API, call init on each module which gives it
     // a chance to do things that call other modules' APIs.
     this.modules.forEach((module: any) => {
@@ -257,7 +264,7 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
     });
   };
 
-  render() {
+  render(): React.JSX.Element {
     const { children } = this.props;
     const value = {
       state: this.state,
@@ -357,7 +364,7 @@ function orDefault<S>(fromStore: S, defaultState: S): S {
   return fromStore;
 }
 
-export const useChannel = (eventMap: API_EventMap, deps: any[] = []) => {
+export const useChannel = (eventMap: API_EventMap, deps: any[] = []): (type: string, ...args: any[]) => void => {
   const api = useStorybookApi();
   useEffect(() => {
     Object.entries(eventMap).forEach(([type, listener]) => api.on(type, listener));
@@ -369,12 +376,12 @@ export const useChannel = (eventMap: API_EventMap, deps: any[] = []) => {
   return api.emit;
 };
 
-export function useStoryPrepared(storyId?: StoryId) {
+export function useStoryPrepared(storyId?: StoryId): boolean {
   const api = useStorybookApi();
   return api.isPrepared(storyId!);
 }
 
-export function useParameter<S>(parameterKey: string, defaultValue?: S) {
+export function useParameter<S>(parameterKey: string, defaultValue?: S): S {
   const api = useStorybookApi();
   const [parameter, setParameter] = useState(api.getCurrentParameter<S>(parameterKey));
 
@@ -486,7 +493,10 @@ export function useSharedState<S>(stateId: string, defaultState?: S) {
   ];
 }
 
-export function useAddonState<S>(addonId: string, defaultState?: S) {
+export function useAddonState<S>(addonId: string, defaultState?: S): [
+  S,
+  (newStateOrMerger: S | API_StateMerger<S>, options?: Options) => void
+] {
   return useSharedState<S>(addonId, defaultState);
 }
 
@@ -538,7 +548,7 @@ export { addons } from './lib/addons.ts';
 
 // We need to rename this so it's not compiled to a straight re-export
 // Our globalization plugin can't handle an import and export of the same name in different lines
-const typesX = types;
+const typesX: typeof types = types;
 
 export { typesX as types };
 

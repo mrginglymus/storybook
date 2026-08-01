@@ -2,22 +2,32 @@ import React from 'react';
 
 import { StorybookLogo } from 'storybook/internal/components';
 
-import { styled, withTheme } from 'storybook/theming';
+import { styled, Theme, StyledComponent, withTheme } from 'storybook/theming';
 
-export const StorybookLogoStyled = styled(StorybookLogo)(({ theme }) => ({
+export const StorybookLogoStyled: StyledComponent<{
+  alt: string;
+} & React.SVGAttributes<SVGSVGElement> & {
+  theme?: Theme;
+}, {}, {}> = styled(StorybookLogo)(({ theme }) => ({
   width: 'auto',
   height: '22px !important',
   display: 'block',
   color: theme.base === 'light' ? theme.color.defaultText : theme.color.lightest,
 }));
 
-export const Img = styled.img({
+export const Img: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, {}> = styled.img({
   display: 'block',
   maxWidth: '150px !important',
   maxHeight: '100px',
 });
 
-export const LogoLink = styled.a(({ theme }) => ({
+export const LogoLink: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>, {}> = styled.a(({ theme }) => ({
   display: 'inline-flex',
   alignItems: 'center',
   height: '100%',
@@ -34,7 +44,9 @@ export const LogoLink = styled.a(({ theme }) => ({
 }));
 
 // @ts-expect-error (TODO)
-export const Brand = withTheme(({ theme }) => {
+export const Brand: React.ForwardRefExoticComponent<Pick<{}, never> & {
+  theme?: Theme;
+}> = withTheme(({ theme }) => {
   const { title = 'Storybook', url = './', image, target } = theme.brand;
   const targetValue = target || (url === './' ? '' : '_blank');
 

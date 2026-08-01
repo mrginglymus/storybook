@@ -11,7 +11,7 @@ import {
 } from '@storybook/icons';
 
 import { useStorybookApi } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 import { Focus } from '../../components/Focus/Focus.tsx';
 import type { ChecklistItem, useChecklist } from '../../components/sidebar/useChecklist.ts';
@@ -165,7 +165,10 @@ const ItemContent = styled.div(({ theme }) => ({
   },
 }));
 
-export const StatusIcon = styled.div(({ theme }) => ({
+export const StatusIcon: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div(({ theme }) => ({
   position: 'relative',
   flex: '0 0 auto',
   minHeight: 16,
@@ -194,7 +197,12 @@ const Checked = styled(StatusPassIcon)<{ 'data-visible'?: boolean }>(
     transition: 'all var(--transition-duration, 0.2s)',
   })
 );
-export const Skipped = styled.span<{ visible?: boolean }>(({ theme, visible }) => ({
+export const Skipped: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  visible?: boolean;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>, {}> = styled.span<{ visible?: boolean }>(({ theme, visible }) => ({
   display: 'flex',
   alignItems: 'center',
   color: theme.textMutedColor,
@@ -259,7 +267,7 @@ export const Checklist = ({
   forceCollapsed = false,
 }: Pick<ReturnType<typeof useChecklist>, 'availableItems' | 'accept' | 'skip' | 'reset'> & {
   forceCollapsed?: boolean;
-}) => {
+}): React.JSX.Element => {
   const api = useStorybookApi();
   const locationHash = useLocationHash();
 

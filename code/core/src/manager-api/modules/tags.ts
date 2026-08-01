@@ -38,7 +38,10 @@ export const serializeTagsParam = (included: Tag[], excluded: Tag[]): string => 
   return [...serializedIncluded, ...serializedExcluded].join(';');
 };
 
-export const getDefaultTagsFromPreset = memoize(1)((
+export const getDefaultTagsFromPreset: (presets: TagsOptions) => {
+  included: Tag[];
+  excluded: Tag[];
+} = memoize(1)((
   presets: TagsOptions
 ): {
   included: Tag[];
@@ -68,7 +71,7 @@ export const computeStaticFilterFn = (tagPresets: TagsOptions) => {
     {} as Record<string, boolean>
   );
 
-  return (item: API_PreparedIndexEntry) => {
+  return (item: API_PreparedIndexEntry): boolean => {
     const tags = item.tags ?? [];
     // Docs entry kinds are distinguished by system tags at index time:
     // - autodocs: type `docs`, no `attached-mdx` / `unattached-mdx` (importPath is the CSF file)

@@ -8,7 +8,7 @@ import { BottomBarToggleIcon, MenuIcon } from '@storybook/icons';
 
 import { useId } from '@react-aria/utils';
 import { useStorybookApi, useStorybookState } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 import { useLandmark } from '../../../hooks/useLandmark.ts';
 import { useLayout } from '../../layout/LayoutProvider.tsx';
@@ -192,7 +192,10 @@ export const MobileNavigation: FC<MobileNavigationProps & ComponentProps<typeof 
   );
 };
 
-const Container = styled.section(({ theme }) => ({
+const Container: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>, {}> = styled.section(({ theme }) => ({
   bottom: 0,
   left: 0,
   width: '100%',

@@ -35,7 +35,7 @@ export type Yarn1ListOutput = {
 const YARN1_ERROR_REGEX = /^error\s(.*)$/gm;
 
 export class Yarn1Proxy extends JsPackageManager {
-  readonly type = PackageManagerName.YARN1;
+  readonly type: PackageManagerName.YARN1 = PackageManagerName.YARN1;
 
   installArgs: string[] | undefined;
 
@@ -90,7 +90,7 @@ export class Yarn1Proxy extends JsPackageManager {
     args: string[],
     cwd?: string,
     stdio?: 'inherit' | 'pipe' | 'ignore'
-  ) {
+  ): ResultPromise {
     return executeCommand({
       command: `yarn`,
       args: [command, ...args],
@@ -113,7 +113,7 @@ export class Yarn1Proxy extends JsPackageManager {
     return JSON.parse(readFileSync(packageJsonPath, 'utf-8')) as Record<string, any>;
   }
 
-  public async getRegistryURL() {
+  public async getRegistryURL(): Promise<string | undefined> {
     const childProcess = await executeCommand({
       command: 'yarn',
       args: ['config', 'get', 'registry'],
@@ -122,7 +122,7 @@ export class Yarn1Proxy extends JsPackageManager {
     return url === 'undefined' ? undefined : url;
   }
 
-  public async findInstallations(pattern: string[], { depth = 99 }: { depth?: number } = {}) {
+  public async findInstallations(pattern: string[], { depth = 99 }: { depth?: number } = {}): Promise<InstallationMetadata | undefined> {
     const yarnArgs = ['list', '--pattern', pattern.map((p) => `"${p}"`).join(' '), '--json'];
 
     if (depth !== 0) {
@@ -150,7 +150,11 @@ export class Yarn1Proxy extends JsPackageManager {
     }
   }
 
-  protected getResolutions(packageJson: PackageJson, versions: Record<string, string>) {
+  protected getResolutions(packageJson: PackageJson, versions: Record<string, string>): {
+    resolutions: {
+      [x: string]: string | undefined;
+    };
+  } {
     return {
       resolutions: {
         ...packageJson.resolutions,
@@ -159,7 +163,7 @@ export class Yarn1Proxy extends JsPackageManager {
     };
   }
 
-  protected runInstall(options?: { force?: boolean }) {
+  protected runInstall(options?: { force?: boolean }): ResultPromise {
     return executeCommand({
       command: 'yarn',
       args: ['install', ...this.getInstallArgs(), ...(options?.force ? ['--force'] : [])],
@@ -168,7 +172,7 @@ export class Yarn1Proxy extends JsPackageManager {
     });
   }
 
-  protected runAddDeps(dependencies: string[], installAsDevDependencies: boolean) {
+  protected runAddDeps(dependencies: string[], installAsDevDependencies: boolean): ResultPromise {
     let args = [...dependencies];
 
     if (installAsDevDependencies) {

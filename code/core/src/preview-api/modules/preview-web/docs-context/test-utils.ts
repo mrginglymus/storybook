@@ -1,10 +1,22 @@
-import type { CSFFile, PreparedStory } from 'storybook/internal/types';
+import type { CSFFile, NormalizedStoryAnnotations, NormalizedComponentAnnotations, PreparedStory, Renderer } from 'storybook/internal/types';
 
 export function csfFileParts(
   storyId = 'meta--story',
   metaId = 'meta',
   { includeDefaultExport = true }: { includeDefaultExport?: boolean } = {}
-) {
+): {
+  component: {}; metaExport: {
+    component: {};
+  }; storyExport: {}; moduleExports: {
+    default: {
+      component: {};
+    };
+    story: {};
+  } | {
+    story: {};
+    default?: undefined;
+  }; storyAnnotations: NormalizedStoryAnnotations<Renderer>; story: PreparedStory; meta: NormalizedComponentAnnotations<Renderer>; csfFile: CSFFile;
+} {
   // These compose the raw exports of the CSF file
   const component = {};
   const metaExport = { component };

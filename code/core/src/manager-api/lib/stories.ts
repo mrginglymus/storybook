@@ -395,7 +395,7 @@ export const transformStoryIndexToStoriesHash = (
 };
 
 /** Now we need to patch in the existing prepared stories */
-export const addPreparedStories = (newHash: API_IndexHash, oldHash?: API_IndexHash) => {
+export const addPreparedStories = (newHash: API_IndexHash, oldHash?: API_IndexHash): API_IndexHash => {
   if (!oldHash) {
     return newHash;
   }
@@ -416,7 +416,7 @@ export const addPreparedStories = (newHash: API_IndexHash, oldHash?: API_IndexHa
   );
 };
 
-export const getComponentLookupList = memoize(1)((hash: API_IndexHash) => {
+export const getComponentLookupList: (hash: API_IndexHash) => string[][] = memoize(1)((hash: API_IndexHash): string[][] => {
   return Object.entries(hash).reduce((acc, i) => {
     const value = i[1];
     if (value.type === 'component') {
@@ -426,6 +426,6 @@ export const getComponentLookupList = memoize(1)((hash: API_IndexHash) => {
   }, [] as StoryId[][]);
 });
 
-export const getStoriesLookupList = memoize(1)((hash: API_IndexHash) => {
+export const getStoriesLookupList: (hash: API_IndexHash) => string[] = memoize(1)((hash: API_IndexHash): string[] => {
   return Object.keys(hash).filter((k) => ['story', 'docs'].includes(hash[k].type));
 });

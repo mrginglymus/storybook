@@ -1,9 +1,13 @@
-import type { CSSObject } from 'storybook/theming';
+import type { CSSObject, Theme, StyledComponent } from 'storybook/theming';
 import { styled } from 'storybook/theming';
 
 import { withMargin, withReset } from '../lib/common.tsx';
+import { DetailedHTMLProps, HTMLAttributes } from 'react';
 
-export const DL = styled.dl(({ theme }) => ({
+export const DL: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, DetailedHTMLProps<HTMLAttributes<HTMLDListElement>, HTMLDListElement>, {}> = styled.dl(({ theme }) => ({
   ...(withReset({ theme }) as CSSObject),
   ...withMargin,
   padding: 0,

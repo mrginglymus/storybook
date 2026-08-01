@@ -1,9 +1,13 @@
-import type { CSSObject } from 'storybook/theming';
+import type { CSSObject, Theme, StyledComponent } from 'storybook/theming';
 import { styled } from 'storybook/theming';
 
 import { withMargin, withReset } from '../lib/common.tsx';
+import { DetailedHTMLProps, HTMLAttributes } from 'react';
 
-export const Pre = styled.pre(({ theme }) => ({
+export const Pre: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement>, {}> = styled.pre(({ theme }) => ({
   ...(withReset({ theme }) as CSSObject),
   ...withMargin,
   // reset

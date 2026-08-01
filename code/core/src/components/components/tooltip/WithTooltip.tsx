@@ -9,7 +9,7 @@ import { global } from '@storybook/global';
 import memoize from 'memoizerific';
 import type { PopperOptions, Config as ReactPopperTooltipConfig } from 'react-popper-tooltip';
 import { usePopperTooltip } from 'react-popper-tooltip';
-import { type Color, lighten, styled } from 'storybook/theming';
+import { type Color, lighten, styled, Theme, StyledComponent } from 'storybook/theming';
 
 const { document } = global;
 
@@ -135,7 +135,7 @@ export interface TooltipProps {
   withArrows?: boolean;
 }
 
-export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
+export const Tooltip: React.ForwardRefExoticComponent<TooltipProps & React.RefAttributes<HTMLDivElement>> = React.forwardRef<HTMLDivElement, TooltipProps>(
   (
     {
       placement = 'top',
@@ -161,7 +161,12 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
 Tooltip.displayName = 'Tooltip';
 
 // A target that doesn't speak popper
-const TargetContainer = styled.div<{ trigger: ReactPopperTooltipConfig['trigger'] }>`
+const TargetContainer: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  trigger: ReactPopperTooltipConfig["trigger"];
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div<{ trigger: ReactPopperTooltipConfig['trigger'] }>`
   display: inline-block;
   cursor: ${(props) =>
     props.trigger === 'hover' || props.trigger?.includes('hover') ? 'default' : 'pointer'};
@@ -312,7 +317,7 @@ const WithToolTipState = ({
   startOpen = false,
   onVisibleChange: onChange,
   ...rest
-}: WithTooltipStateProps) => {
+}: WithTooltipStateProps): React.JSX.Element => {
   const [tooltipShown, setTooltipShown] = useState(startOpen);
   const onVisibilityChange = useCallback(
     (visibility: boolean) => {

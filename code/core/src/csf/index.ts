@@ -5,7 +5,7 @@ import { toStartCaseStr } from './toStartCaseStr.ts';
  *
  * See https://gist.github.com/davidjrice/9d2af51100e41c6c4b4a
  */
-export const sanitize = (string: string) => {
+export const sanitize = (string: string): string => {
   return string
     .toLowerCase()
 
@@ -32,7 +32,7 @@ export const toTestId = (parentId: string, testName: string) =>
   `${parentId}:${sanitizeSafe(testName, 'test')}`;
 
 /** Transform a CSF named export into a readable story name */
-export const storyNameFromExport = (key: string) => toStartCaseStr(key);
+export const storyNameFromExport = (key: string): string => toStartCaseStr(key);
 
 type StoryDescriptor = string[] | RegExp;
 export interface IncludeExcludeOptions {
@@ -51,7 +51,7 @@ function matches(storyKey: string, arrayOrRegex: StoryDescriptor) {
 export function isExportStory(
   key: string,
   { includeStories, excludeStories }: IncludeExcludeOptions
-) {
+): boolean | null {
   return (
     // https://babeljs.io/docs/en/babel-plugin-transform-modules-commonjs
     key !== '__esModule' &&
@@ -66,7 +66,10 @@ export interface SeparatorOptions {
 }
 
 /** Parse out the component/kind name from a path, using the given separator config. */
-export const parseKind = (kind: string, { rootSeparator, groupSeparator }: SeparatorOptions) => {
+export const parseKind = (kind: string, { rootSeparator, groupSeparator }: SeparatorOptions): {
+  root: string | null;
+  groups: string[];
+} => {
   const [root, remainder] = kind.split(rootSeparator, 2);
   const groups = (remainder || kind).split(groupSeparator).filter((i) => !!i);
 

@@ -21,7 +21,7 @@ type PlacementWithModifier =
 
 export type PopperPlacement = BasicPlacement | PlacementWithModifier;
 
-export const convertToReactAriaPlacement = memoize(1000)((
+export const convertToReactAriaPlacement: (p: PopperPlacement) => NonNullable<PositionProps["placement"]> = memoize(1000)((
   p: PopperPlacement
 ): NonNullable<PositionProps['placement']> => {
   if (p === 'left-end') {
@@ -57,7 +57,7 @@ const Container = styled.div({
 interface TriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
-export const Trigger = forwardRef<HTMLButtonElement, TriggerProps>((props, ref) => (
+export const Trigger: React.ForwardRefExoticComponent<TriggerProps & React.RefAttributes<HTMLButtonElement>> = forwardRef<HTMLButtonElement, TriggerProps>((props, ref) => (
   <button
     {...props}
     ref={ref}

@@ -68,7 +68,7 @@ export function hasCoreAnnotations(annotations: unknown): boolean {
   );
 }
 
-export function getCoreAnnotations() {
+export function getCoreAnnotations(): any[] {
   return [
     // @ts-expect-error CJS fallback
     (measureAnnotations.default ?? measureAnnotations)(),

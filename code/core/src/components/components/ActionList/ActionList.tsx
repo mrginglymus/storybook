@@ -2,10 +2,10 @@ import React, { type ComponentProps, forwardRef } from 'react';
 
 import { darken, transparentize } from 'polished';
 import type { TransitionStatus } from 'react-transition-state';
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
-import { Button } from '../Button/Button.tsx';
-import { ToggleButton } from '../ToggleButton/ToggleButton.tsx';
+import { Button, ButtonProps } from '../Button/Button.tsx';
+import { ToggleButton, ToggleButtonProps } from '../ToggleButton/ToggleButton.tsx';
 
 const ActionListItem = styled.li<{
   active?: boolean;
@@ -149,7 +149,11 @@ const ActionListToggle = forwardRef<HTMLButtonElement, ComponentProps<typeof Sty
   }
 );
 
-const ActionListAction = styled(ActionListButton)(({ theme }) => ({
+const ActionListAction: StyledComponent<Omit<Omit<ButtonProps, "ref"> & React.RefAttributes<HTMLButtonElement> & {
+  theme?: Theme;
+}, "ref"> & React.RefAttributes<HTMLButtonElement> & {
+  theme?: Theme;
+}, {}, {}> = styled(ActionListButton)(({ theme }) => ({
   height: 'auto',
   minHeight: 32,
   flex: '0 1 100%',
@@ -171,7 +175,7 @@ const ActionListAction = styled(ActionListButton)(({ theme }) => ({
 
 const ActionListLink = (
   props: ComponentProps<typeof ActionListAction> & React.AnchorHTMLAttributes<HTMLAnchorElement>
-) => <ActionListAction as="a" {...props} />;
+): React.JSX.Element => <ActionListAction as="a" {...props} />;
 
 const ActionListText = styled.div(({ theme }) => ({
   display: 'flex',
@@ -219,7 +223,49 @@ const ActionListIcon = styled.div({
   color: 'var(--listbox-item-muted-color)',
 });
 
-export const ActionList = Object.assign(
+export const ActionList: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLUListElement>, HTMLUListElement>, {}> & {
+  Item: StyledComponent<{
+    theme?: Theme;
+    as?: React.ElementType;
+  } & {
+    active?: boolean;
+    transitionStatus?: TransitionStatus;
+  }, React.DetailedHTMLProps<React.LiHTMLAttributes<HTMLLIElement>, HTMLLIElement>, {}>;
+  HoverItem: StyledComponent<{
+    theme?: Theme;
+    as?: React.ElementType;
+  } & {
+    active?: boolean;
+    transitionStatus?: TransitionStatus;
+  } & React.ClassAttributes<HTMLLIElement> & React.LiHTMLAttributes<HTMLLIElement> & {
+    theme?: Theme;
+  } & {
+    targetId: string;
+  }, {}, {}>;
+  Button: React.ForwardRefExoticComponent<Omit<Omit<ButtonProps, "ref"> & React.RefAttributes<HTMLButtonElement> & {
+    theme?: Theme;
+  }, "ref"> & React.RefAttributes<HTMLButtonElement>>;
+  Toggle: React.ForwardRefExoticComponent<Omit<Omit<ToggleButtonProps, "ref"> & React.RefAttributes<HTMLButtonElement> & {
+    theme?: Theme;
+  }, "ref"> & React.RefAttributes<HTMLButtonElement>>;
+  Action: StyledComponent<Omit<Omit<ButtonProps, "ref"> & React.RefAttributes<HTMLButtonElement> & {
+    theme?: Theme;
+  }, "ref"> & React.RefAttributes<HTMLButtonElement> & {
+    theme?: Theme;
+  }, {}, {}>;
+  Link: (props: ComponentProps<typeof ActionListAction> & React.AnchorHTMLAttributes<HTMLAnchorElement>) => React.JSX.Element;
+  Text: StyledComponent<{
+    theme?: Theme;
+    as?: React.ElementType;
+  }, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}>;
+  Icon: StyledComponent<{
+    theme?: Theme;
+    as?: React.ElementType;
+  }, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}>;
+} = Object.assign(
   styled.ul(({ theme, onClick }) => ({
     listStyle: 'none',
     margin: 0,

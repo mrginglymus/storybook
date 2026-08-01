@@ -1,6 +1,10 @@
-import { styled } from 'storybook/theming';
+import { DetailedHTMLProps, HTMLAttributes } from 'react';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
-export const DocumentWrapper = styled.div(({ theme }) => ({
+export const DocumentWrapper: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div(({ theme }) => ({
   fontSize: `${theme.typography.size.s2}px`,
   lineHeight: '1.6',
 

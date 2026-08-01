@@ -2,7 +2,7 @@ import React, { type HTMLProps } from 'react';
 import { forwardRef } from 'react';
 
 import { useId } from '@react-aria/utils';
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 import {
   type Alignments,
@@ -57,7 +57,17 @@ type InputProps = Omit<
   suffix?: string;
 };
 
-export const Input = Object.assign(
+export const Input: StyledComponent<Omit<InputProps, "ref"> & React.RefAttributes<any> & {
+  theme?: Theme;
+} & Omit<React.HTMLProps<HTMLInputElement>, "height" | "size" | "align" | "valid"> & {
+  size?: Sizes;
+  align?: Alignments;
+  valid?: ValidationStates;
+  height?: number;
+  suffix?: string;
+}, {}, {}> & {
+  displayName: string;
+} = Object.assign(
   styled(
     forwardRef<any, InputProps>(function Input(
       { size, valid, align, value, suffix, ...props },

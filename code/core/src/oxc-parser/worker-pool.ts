@@ -74,7 +74,7 @@ export class OxcWorkerPool implements OxcParsePool {
   private nextId = 0;
   private disposed = false;
 
-  constructor(scriptPath: string, size: number, taskTimeoutMs = DEFAULT_TASK_TIMEOUT_MS) {
+  constructor(scriptPath: string, size: number, taskTimeoutMs: number = DEFAULT_TASK_TIMEOUT_MS) {
     this.taskTimeoutMs = taskTimeoutMs;
     try {
       for (let i = 0; i < size; i++) {

@@ -22,7 +22,17 @@ const normalizedCwd = cwd ? (isAbsolute(cwd) ? cwd : join(ROOT_DIRECTORY, cwd)) 
 
 const tsconfigPath = join(normalizedCwd, 'tsconfig.json');
 
-if (existsSync(tsconfigPath)) {
+/**
+ * A package may opt into a second pass by adding this file next to its `tsconfig.json`. It exists
+ * for packages whose main config enables `isolatedDeclarations`: files that are never part of
+ * declaration emit (tests, stories, mock data) are excluded there and checked here instead, so they
+ * keep full type coverage without needing export annotations. Matched by exact name rather than a
+ * `tsconfig.*.json` glob, so unrelated configs (e.g. the Angular packages' `tsconfig.spec.json`)
+ * are not picked up.
+ */
+const extraTsconfigPath = join(normalizedCwd, 'tsconfig.non-emitted.json');
+
+function runTsc(project: string): void {
   const require = createRequire(import.meta.url);
   const tscPath = join(dirname(require.resolve('typescript-native/package.json')), 'bin', 'tsc');
 
@@ -33,7 +43,7 @@ if (existsSync(tsconfigPath)) {
 
   const result = spawnSync(
     process.execPath,
-    [tscPath, '--project', tsconfigPath, '--noEmit', '--pretty', 'false'],
+    [tscPath, '--project', project, '--noEmit', '--pretty', 'false'],
     {
       cwd: normalizedCwd,
       encoding: 'utf8',
@@ -87,6 +97,14 @@ if (existsSync(tsconfigPath)) {
     if (!process.env.CI) {
       console.log('✅ No type errors in this package (external diagnostics ignored)');
     }
+  }
+}
+
+if (existsSync(tsconfigPath)) {
+  runTsc(tsconfigPath);
+
+  if (existsSync(extraTsconfigPath)) {
+    runTsc(extraTsconfigPath);
   }
 }
 

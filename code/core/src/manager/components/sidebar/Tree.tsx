@@ -26,7 +26,7 @@ import type {
   StoriesHash,
   StoryEntry,
 } from 'storybook/manager-api';
-import { styled, useTheme } from 'storybook/theming';
+import { styled, Theme, StyledComponent, useTheme } from 'storybook/theming';
 
 import type { Link } from '../../../components/components/tooltip/TooltipLinkList.tsx';
 import { MEDIA_DESKTOP_BREAKPOINT } from '../../constants.ts';
@@ -76,7 +76,10 @@ const CollapseButton = styled(Button)(({ theme }) => ({
   padding: '0 8px',
 }));
 
-export const LeafNodeStyleWrapper = styled.div(({ theme }) => ({
+export const LeafNodeStyleWrapper: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div(({ theme }) => ({
   position: 'relative',
   display: 'flex',
   justifyContent: 'space-between',
@@ -156,7 +159,9 @@ const StatusSlots = styled.div({
   alignItems: 'center',
 });
 
-export const ContextMenu = {
+export const ContextMenu: {
+  ListItem: React.ForwardRefExoticComponent<Omit<ListItemProps, "ref"> & React.RefAttributes<unknown>>;
+} = {
   ListItem,
 };
 
@@ -602,7 +607,18 @@ const Root = React.memo<NodeProps & { expandableDescendants: string[] }>(functio
   );
 });
 
-export const Tree = React.memo<{
+export const Tree: React.NamedExoticComponent<{
+  isBrowsing: boolean;
+  isMain: boolean;
+  allStatuses?: StatusesByStoryIdAndTypeId;
+  refId: string;
+  data: StoriesHash;
+  docsMode: boolean;
+  highlightedRef: MutableRefObject<Highlight>;
+  setHighlightedItemId: (itemId: string) => void;
+  selectedStoryId: string | null;
+  onSelectStoryId: (storyId: string) => void;
+}> = React.memo<{
   isBrowsing: boolean;
   isMain: boolean;
   allStatuses?: StatusesByStoryIdAndTypeId;

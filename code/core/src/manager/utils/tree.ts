@@ -10,7 +10,7 @@ import type { Dataset, Item, RefType, SearchItem } from '../components/sidebar/t
 
 const { document, window: globalWindow } = global;
 
-export const createId = (itemId: string, refId?: string) =>
+export const createId = (itemId: string, refId?: string): string =>
   !refId || refId === DEFAULT_REF_ID ? itemId : `${refId}_${itemId}`;
 
 export const getLink = (item: HashEntry, refId?: string) => {
@@ -22,19 +22,19 @@ export const prevent = (e: SyntheticEvent) => {
   return false;
 };
 
-export const get = memoize(1000)((id: string, dataset: Dataset) => dataset[id]);
-export const getParent = memoize(1000)((id: string, dataset: Dataset) => {
+export const get: (id: string, dataset: Dataset) => Item = memoize(1000)((id: string, dataset: Dataset): Item => dataset[id]);
+export const getParent: (id: string, dataset: Dataset) => Item | undefined = memoize(1000)((id: string, dataset: Dataset): Item | undefined => {
   const item = get(id, dataset);
   return item && item.type !== 'root' ? get(item.parent as string, dataset) : undefined;
 });
-export const getParents = memoize(1000)((id: string, dataset: Dataset): Item[] => {
+export const getParents: (id: string, dataset: Dataset) => Item[] = memoize(1000)((id: string, dataset: Dataset): Item[] => {
   const parent = getParent(id, dataset);
   return parent ? [parent, ...getParents(parent.id, dataset)] : [];
 });
-export const getAncestorIds = memoize(1000)((data: IndexHash, id: string): string[] =>
+export const getAncestorIds: (data: IndexHash, id: string) => string[] = memoize(1000)((data: IndexHash, id: string): string[] =>
   getParents(id, data).map((item) => item.id)
 );
-export const getDescendantIds = memoize(1000)((
+export const getDescendantIds: (data: IndexHash, id: string, skipLeafs: boolean) => string[] = memoize(1000)((
   data: IndexHash,
   id: string,
   skipLeafs: boolean
@@ -81,7 +81,7 @@ export function cycle<T>(array: T[], index: number, delta: number): number {
   return next;
 }
 
-export const scrollIntoView = (element: Element, center = false) => {
+export const scrollIntoView = (element: Element, center = false): void => {
   if (!element) {
     return;
   }
@@ -103,7 +103,7 @@ export const getStateType = (
   isAuthRequired: boolean,
   isError: boolean,
   isEmpty: boolean
-) => {
+): "error" | "auth" | "loading" | "empty" | "ready" => {
   switch (true) {
     case isAuthRequired:
       return 'auth';
@@ -129,7 +129,7 @@ export const isAncestor = (element?: Element, maybeAncestor?: Element): boolean 
   return isAncestor(element.parentElement || undefined, maybeAncestor);
 };
 
-export const removeNoiseFromName = (storyName: string) => storyName.replaceAll(/(\s|-|_)/gi, '');
+export const removeNoiseFromName = (storyName: string): string => storyName.replaceAll(/(\s|-|_)/gi, '');
 
-export const isStoryHoistable = (storyName: string, componentName: string) =>
+export const isStoryHoistable = (storyName: string, componentName: string): boolean =>
   removeNoiseFromName(storyName) === removeNoiseFromName(componentName);

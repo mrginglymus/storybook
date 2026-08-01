@@ -58,4 +58,4 @@ function getAddonsStore(): AddonStore {
   return globalThis[KEY];
 }
 
-export const addons = getAddonsStore();
+export const addons: AddonStore = getAddonsStore();

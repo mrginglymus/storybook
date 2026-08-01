@@ -27,4 +27,4 @@ export interface Render<TRenderer extends Renderer> {
   ) => Promise<void>;
 }
 
-export const PREPARE_ABORTED = new Error('prepareAborted');
+export const PREPARE_ABORTED: Error = new Error('prepareAborted');

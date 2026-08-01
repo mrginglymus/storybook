@@ -6,8 +6,8 @@ import { fullTestProviderStore } from '../stores/test-provider.ts';
  * avoid conflicts with already running component tests.
  */
 export async function waitForIdleVitest(
-  maxWaitMs = 30 * 60 * 1000,
-  pollIntervalMs = 60 * 1000
+  maxWaitMs: number = 30 * 60 * 1000,
+  pollIntervalMs: number = 60 * 1000
 ): Promise<boolean> {
   const deadline = Date.now() + maxWaitMs;
   while (Date.now() < deadline) {

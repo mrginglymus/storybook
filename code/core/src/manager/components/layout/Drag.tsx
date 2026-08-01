@@ -37,7 +37,7 @@ const oppositePosition: Record<string, PopperPlacement> = {
  * The component automatically sets `role="separator"`, `tabIndex={0}`, and `aria-valuemin={0}`. A
  * tooltip is shown on focus advertising the arrow keys available for keyboard resizing.
  */
-export const Drag = forwardRef<HTMLDivElement, DragProps>(function Drag(props, ref) {
+export const Drag: React.ForwardRefExoticComponent<DragProps & React.RefAttributes<HTMLDivElement>> = forwardRef<HTMLDivElement, DragProps>(function Drag(props, ref) {
   const {
     overlapping,
     position,

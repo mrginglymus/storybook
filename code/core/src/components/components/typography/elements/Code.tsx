@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import React, { Children } from 'react';
 
-import type { CSSObject } from 'storybook/theming';
+import type { CSSObject, Theme, StyledComponent } from 'storybook/theming';
 import { styled } from 'storybook/theming';
 
 import { SyntaxHighlighter } from '../../syntaxhighlighter/lazy-syntaxhighlighter.tsx';
@@ -11,7 +11,10 @@ import { isReactChildString } from '../lib/isReactChildString.tsx';
 
 const isInlineCodeRegex = /[\n\r]/g;
 
-const DefaultCodeBlock = styled.code(({ theme }) => ({
+const DefaultCodeBlock: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>, {}> = styled.code(({ theme }) => ({
   // from reset
   fontFamily: theme.typography.fonts.mono,
   WebkitFontSmoothing: 'antialiased',
@@ -43,7 +46,7 @@ export const Code = ({
   className,
   children,
   ...props
-}: ComponentProps<typeof DefaultCodeBlock>) => {
+}: ComponentProps<typeof DefaultCodeBlock>): React.JSX.Element => {
   const language = (className || '').match(/lang-(\S+)/);
   const childrenArray = Children.toArray(children);
   const isInlineCode = !childrenArray

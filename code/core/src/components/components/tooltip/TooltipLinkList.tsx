@@ -3,12 +3,15 @@ import React, { Fragment, useCallback } from 'react';
 
 import { deprecate } from 'storybook/internal/client-logger';
 
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 import type { LinkWrapperType, ListItemProps } from './ListItem.tsx';
 import ListItem from './ListItem.tsx';
 
-const List = styled.div(
+const List: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div(
   {
     minWidth: 180,
     overflow: 'hidden',
@@ -67,7 +70,7 @@ export interface TooltipLinkListProps extends ComponentProps<typeof List> {
   LinkWrapper?: LinkWrapperType;
 }
 
-export const TooltipLinkList = ({ links, LinkWrapper, ...props }: TooltipLinkListProps) => {
+export const TooltipLinkList = ({ links, LinkWrapper, ...props }: TooltipLinkListProps): React.JSX.Element => {
   deprecate(
     '`TooltipLinkList` is deprecated and will be removed in Storybook 11, use `ActionList` or `MenuItem` and `WithMenu` instead.'
   );

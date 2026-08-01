@@ -1,8 +1,8 @@
 export const ADDON_ID = 'storybook/docs';
-export const PANEL_ID = `${ADDON_ID}/panel`;
+export const PANEL_ID: "storybook/docs/panel" = `${ADDON_ID}/panel`;
 export const PARAM_KEY = `docs`;
 
-export const SNIPPET_RENDERED = `${ADDON_ID}/snippet-rendered`;
+export const SNIPPET_RENDERED: "storybook/docs/snippet-rendered" = `${ADDON_ID}/snippet-rendered`;
 
 export enum SourceType {
   /**

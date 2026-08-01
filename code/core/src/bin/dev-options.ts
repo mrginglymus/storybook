@@ -32,7 +32,14 @@ const PortSchema = v.message(
   (issue) => `Port must be a valid number from 1 to 65535, received ${issue.received}.`
 );
 
-const DevOptionsSchema = v.looseObject({
+const DevOptionsSchema: v.LooseObjectSchema<{
+  readonly ci: v.OptionalSchema<v.UnionSchema<[v.BooleanSchema<undefined>, v.StringSchema<undefined>], undefined>, undefined>;
+  readonly configDir: v.OptionalSchema<v.StringSchema<undefined>, undefined>;
+  readonly host: v.OptionalSchema<v.StringSchema<undefined>, undefined>;
+  readonly open: v.OptionalSchema<v.BooleanSchema<undefined>, undefined>;
+  readonly port: v.OptionalSchema<v.SchemaWithPipe<readonly [v.UnionSchema<[v.SchemaWithPipe<readonly [v.StringSchema<undefined>, v.TrimAction, v.RegexAction<string, undefined>, v.TransformAction<any, number>]>, v.NumberSchema<undefined>], undefined>, v.MinValueAction<number, 1, undefined>, v.IntegerAction<number, undefined>, v.MaxValueAction<number, 65535, undefined>]>, undefined>;
+  readonly staticDir: v.OptionalSchema<v.StringSchema<undefined>, undefined>;
+}, undefined> = v.looseObject({
   ci: v.optional(v.union([v.boolean(), v.string()])),
   configDir: v.optional(v.string()),
   host: v.optional(v.string()),

@@ -12,9 +12,9 @@ const typescriptFallbackExtensions: Record<string, string[]> = {
   '.jsx': ['.tsx'],
 };
 
-export const supportedExtensions = storybookConfigExtensions;
+export const supportedExtensions: readonly [".js", ".ts", ".jsx", ".tsx", ".mjs", ".mts", ".mtsx", ".cjs", ".cts", ".ctsx"] = storybookConfigExtensions;
 
-export function getInterpretedFile(pathToFile: string) {
+export function getInterpretedFile(pathToFile: string): string | undefined {
   return supportedExtensions
     .map((ext) => (pathToFile.endsWith(ext) ? pathToFile : `${pathToFile}${ext}`))
     .find((candidate) => existsSync(candidate));

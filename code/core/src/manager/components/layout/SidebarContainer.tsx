@@ -27,7 +27,7 @@ const SidebarSlot = styled.div({
  * reopen the sidebar. The sidebar is always rendered (to preserve internal state), but it's
  * excluded from the Accessibility Object Model when effectively collapsed.
  */
-const SidebarContainer = React.memo<SidebarContainerProps>(function SidebarContainer(props) {
+const SidebarContainer: React.NamedExoticComponent<SidebarContainerProps> = React.memo<SidebarContainerProps>(function SidebarContainer(props) {
   const { children, navSize, sidebarMaxWidth, sidebarResizerRef } = props;
 
   const shouldHideSidebarContent = navSize === 0;

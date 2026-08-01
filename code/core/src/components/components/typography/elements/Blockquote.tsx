@@ -1,9 +1,13 @@
-import type { CSSObject } from 'storybook/theming';
+import type { CSSObject, Theme, StyledComponent } from 'storybook/theming';
 import { styled } from 'storybook/theming';
 
 import { withMargin, withReset } from '../lib/common.tsx';
+import { DetailedHTMLProps, BlockquoteHTMLAttributes } from 'react';
 
-export const Blockquote = styled.blockquote(({ theme }) => ({
+export const Blockquote: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, DetailedHTMLProps<BlockquoteHTMLAttributes<HTMLQuoteElement>, HTMLQuoteElement>, {}> = styled.blockquote(({ theme }) => ({
   ...(withReset({ theme }) as CSSObject),
   ...withMargin,
   borderLeft: `4px solid ${theme.color.medium}`,

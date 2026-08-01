@@ -110,7 +110,7 @@ export class AddonStore {
     collection[id] = { ...addon, id };
   }
 
-  setConfig = (value: Addon_Config) => {
+  setConfig = (value: Addon_Config): void => {
     Object.assign(this.config, value);
     if (this.hasChannel()) {
       this.getChannel().emit(SET_CONFIG, this.config);
@@ -121,7 +121,7 @@ export class AddonStore {
     }
   };
 
-  getConfig = () => this.config;
+  getConfig = (): Addon_Config => this.config;
 
   /**
    * Registers an addon loader function.
@@ -137,7 +137,7 @@ export class AddonStore {
     this.loaders[id] = callback;
   };
 
-  loadAddons = (api: any) => {
+  loadAddons = (api: any): void => {
     Object.values(this.loaders).forEach((value: any) => value(api));
   };
 
@@ -146,7 +146,7 @@ export class AddonStore {
       | Addon_Types
       | Addon_TypesEnum.experimental_PAGE
       | Addon_TypesEnum.experimental_TEST_PROVIDER,
-  >(type?: T) {
+  >(type?: T): string[] {
     return type ? Object.keys(this.getElements(type)) : Object.keys(this.loaders);
   }
 }
@@ -161,6 +161,6 @@ function getAddonsStore(): AddonStore {
   return globalThis[KEY];
 }
 
-export const addons = getAddonsStore();
+export const addons: AddonStore = getAddonsStore();
 
 export { mockChannel };

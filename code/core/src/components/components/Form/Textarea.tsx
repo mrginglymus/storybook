@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 
 import TextareaAutoResize from 'react-textarea-autosize';
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 import {
   type Alignments,
@@ -48,7 +48,16 @@ type TextareaProps = Omit<
   height?: number;
 } & React.RefAttributes<HTMLTextAreaElement>;
 
-export const Textarea = Object.assign(
+export const Textarea: StyledComponent<Omit<TextareaProps, "ref"> & React.RefAttributes<any> & {
+  theme?: Theme;
+} & Omit<TextareaAutosizeProps, "valid" | "size" | "align" | "height"> & {
+  size?: Sizes;
+  align?: Alignments;
+  valid?: ValidationStates;
+  height?: number;
+} & React.RefAttributes<HTMLTextAreaElement>, {}, {}> & {
+  displayName: string;
+} = Object.assign(
   styled(
     forwardRef<any, TextareaProps>(function Textarea({ size, valid, align, ...props }, ref) {
       return <TextareaAutoResize {...props} ref={ref} />;

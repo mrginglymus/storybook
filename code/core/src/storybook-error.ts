@@ -56,7 +56,7 @@ export abstract class StorybookError extends Error {
    */
   public isHandledError = false;
 
-  get fullErrorCode() {
+  get fullErrorCode(): `SB_${string}_${string}` {
     return parseErrorCode({ code: this.code, category: this.category });
   }
 

@@ -3,7 +3,7 @@ import React, { type ComponentProps, type ReactNode, type SyntheticEvent, forwar
 import { deprecate } from 'storybook/internal/client-logger';
 
 import memoize from 'memoizerific';
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 export interface TitleProps {
   children?: ReactNode;
@@ -116,7 +116,10 @@ export interface ItemProps {
   onClick?: (event: SyntheticEvent, ...args: any[]) => any;
 }
 
-const Item = styled.button<ItemProps>(
+const Item: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & ItemProps, React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, {}> = styled.button<ItemProps>(
   ({ theme }) => ({
     width: '100%',
     minWidth: 0, // required for overflow
@@ -201,7 +204,7 @@ export interface ListItemProps extends Omit<ComponentProps<typeof Item>, 'title'
   isIndented?: boolean;
 }
 
-const ListItem = forwardRef((props: ListItemProps, ref) => {
+const ListItem: React.ForwardRefExoticComponent<Omit<ListItemProps, "ref"> & React.RefAttributes<unknown>> = forwardRef((props: ListItemProps, ref) => {
   const {
     loading = false,
     title = <span>Loading state</span>,

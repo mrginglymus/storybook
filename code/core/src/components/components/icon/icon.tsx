@@ -5,14 +5,17 @@ import { deprecate, logger } from 'storybook/internal/client-logger';
 
 import * as StorybookIcons from '@storybook/icons';
 
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 export type IconType = keyof typeof icons;
 type NewIconTypes = (typeof icons)[IconType];
 
 const NEW_ICON_MAP = StorybookIcons as Record<NewIconTypes, (props: unknown) => React.ReactNode>;
 
-const Svg = styled.svg`
+const Svg: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.SVGProps<SVGSVGElement>, {}> = styled.svg`
   display: inline-block;
   shape-rendering: inherit;
   vertical-align: middle;
@@ -39,7 +42,7 @@ export const Icons = ({
   useSymbol,
   __suppressDeprecationWarning = false,
   ...props
-}: IconsProps) => {
+}: IconsProps): React.JSX.Element | null => {
   if (!__suppressDeprecationWarning) {
     deprecate(
       `Use of the deprecated Icons ${
@@ -72,7 +75,7 @@ export interface SymbolsProps {
  * @deprecated No longer used, will be removed in Storybook 9.0 Please use the `@storybook/icons`
  *   package instead.
  */
-export const Symbols = memo<SymbolsProps>(function Symbols({ icons: keys = Object.keys(icons) }) {
+export const Symbols: React.NamedExoticComponent<SymbolsProps> = memo<SymbolsProps>(function Symbols({ icons: keys = Object.keys(icons) }) {
   return (
     <Svg
       viewBox="0 0 14 14"

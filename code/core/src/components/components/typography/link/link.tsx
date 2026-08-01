@@ -195,7 +195,7 @@ export interface LinkProps extends LinkInnerProps, LinkStylesProps, AProps {
   href?: string;
 }
 
-export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
+export const Link: React.ForwardRefExoticComponent<LinkProps & React.RefAttributes<HTMLAnchorElement>> = forwardRef<HTMLAnchorElement, LinkProps>(
   (
     {
       cancel = true,

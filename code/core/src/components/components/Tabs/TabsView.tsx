@@ -5,12 +5,12 @@ import { Item } from '@react-stately/collections';
 import type { TabListState } from '@react-stately/tabs';
 import { useTabListState } from '@react-stately/tabs';
 import type { Key } from '@react-types/shared';
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 import { Bar } from '../Bar/Bar.tsx';
 import { EmptyTabContent } from './EmptyTabContent.tsx';
 import { TabList } from './TabList.tsx';
-import { TabPanel } from './TabPanel.tsx';
+import { TabPanel, TabPanelProps } from './TabPanel.tsx';
 
 export interface TabProps {
   id: string;
@@ -46,13 +46,18 @@ export const useTabsState = ({
   });
 };
 
-export const Container = styled.div({
+export const Container: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
 });
 
-export const FlexTabPanel = styled(TabPanel)(() => ({
+export const FlexTabPanel: StyledComponent<TabPanelProps & {
+  theme?: Theme;
+}, {}, {}> = styled(TabPanel)(() => ({
   flex: 1,
 }));
 

@@ -39,7 +39,14 @@ const AddonButton = styled(TabButton)<{ preActive: boolean }>(({ active, theme, 
   `;
 });
 
-export function useList(list: ChildrenListComplete) {
+export function useList(list: ChildrenListComplete): {
+  tabRefs: React.MutableRefObject<Map<string, HTMLButtonElement>>; addonsRef: React.MutableRefObject<HTMLButtonElement | undefined>; tabBarRef: React.MutableRefObject<HTMLDivElement | undefined>; visibleList: ChildrenListComplete; invisibleList: ChildrenListComplete; AddonTab: ({ menuName, actions, }: {
+    menuName: string;
+    actions?: {
+      onSelect: (id: string) => void;
+    } & Record<string, any>;
+  }) => React.JSX.Element;
+} {
   deprecate('The `useList` tabs hook is deprecated. Use `TabsView` instead.');
 
   const tabBarRef = useRef<HTMLDivElement>();
@@ -63,7 +70,7 @@ export function useList(list: ChildrenListComplete) {
       actions?: {
         onSelect: (id: string) => void;
       } & Record<string, any>;
-    }) => {
+    }): React.JSX.Element => {
       const isAddonsActive = invisibleList.some(({ active }) => active);
       const [isTooltipVisible, setTooltipVisible] = useState(false);
       return (

@@ -1,7 +1,8 @@
-import type { CSSObject } from 'storybook/theming';
+import type { CSSObject, Theme, StyledComponent } from 'storybook/theming';
 import { styled } from 'storybook/theming';
 
 import { withMargin, withReset } from '../lib/common.tsx';
+import { DetailedHTMLProps, HTMLAttributes } from 'react';
 
 const listCommon = {
   paddingLeft: 30,
@@ -13,7 +14,10 @@ const listCommon = {
   },
 };
 
-export const UL = styled.ul(({ theme }) => ({
+export const UL: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, DetailedHTMLProps<HTMLAttributes<HTMLUListElement>, HTMLUListElement>, {}> = styled.ul(({ theme }) => ({
   ...(withReset({ theme }) as CSSObject),
   ...withMargin,
   ...listCommon,

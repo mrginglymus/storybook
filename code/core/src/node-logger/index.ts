@@ -3,6 +3,7 @@ import npmLog from 'npmlog';
 import prettyTime from 'pretty-hrtime';
 
 import * as newLogger from './logger/logger.ts';
+import { LogMessageOptions } from '@clack/prompts';
 
 export { prompt } from './prompts/index.ts';
 export { logTracker } from './logger/log-tracker.ts';
@@ -55,7 +56,7 @@ function hex(hexColor: string) {
 }
 
 /** @deprecated Use CLI_COLORS instead */
-export const colors = {
+export const colors: { pink: (text: string) => string; purple: (text: string) => string; orange: (text: string) => string; green: (text: string) => string; blue: (text: string) => string; red: (text: string) => string; gray: (text: string) => string; } = {
   pink: hex('#F1618C'),
   purple: hex('#B57EE5'),
   orange: hex('#F3AD38'),
@@ -65,7 +66,14 @@ export const colors = {
   gray: hex('#B8C2CC'),
 };
 
-export const logger = {
+export const logger: {
+  verbose: (message: string) => void; line: (count?: number) => void;
+  /** For non-critical issues or warnings */
+  warn: (message: string) => void; trace: ({ message, time }: { message: string; time: [number, number]; }) => void; setLevel: (level?: newLogger.LogLevel) => void; setLogLevel: (level?: newLogger.LogLevel) => void; error: (message: unknown) => void; getLogLevel: () => newLogger.LogLevel; shouldLog: (level: newLogger.LogLevel) => boolean; debug: (message: any) => void; log: (message?: string | string[] | undefined, args_1?: LogMessageOptions | undefined) => void; info: (message: string, opts?: LogMessageOptions | undefined) => void; logBox: (message: string, { title, ...options }?: newLogger.BoxOptions) => void; intro: (message: string) => void; outro: (message: string) => void; step: (message: string) => void; SYMBOLS: {
+    success: string;
+    error: string;
+  }; wrapTextForClack: typeof newLogger.wrapTextForClack;
+} = {
   ...newLogger,
   verbose: (message: string): void => newLogger.debug(message),
 
@@ -93,7 +101,7 @@ export const logger = {
 export { npmLog as instance };
 
 const logged = new Set();
-export const once = (type: 'verbose' | 'info' | 'warn' | 'error') => (message: string) => {
+export const once: { (type: "verbose" | "info" | "warn" | "error"): (message: string) => void; clear(): void; verbose: (message: string) => void; info: (message: string) => void; warn: (message: string) => void; error: (message: string) => void; } = (type: 'verbose' | 'info' | 'warn' | 'error') => (message: string): void => {
   if (logged.has(message)) {
     return undefined;
   }
@@ -101,10 +109,10 @@ export const once = (type: 'verbose' | 'info' | 'warn' | 'error') => (message: s
   return logger[type](message);
 };
 
-once.clear = () => logged.clear();
+once.clear = (): void => logged.clear();
 once.verbose = once('verbose');
 once.info = once('info');
 once.warn = once('warn');
 once.error = once('error');
 
-export const deprecate = once('warn');
+export const deprecate: (message: string) => void = once('warn');

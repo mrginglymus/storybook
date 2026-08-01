@@ -6,28 +6,28 @@ import { REVIEW_EVENTS, REVIEW_NAMESPACE } from '../../../shared/review/index.ts
 
 export { REVIEW_NAMESPACE as ADDON_ID, REVIEW_EVENTS as EVENTS };
 
-export const PAGE_ID = `${REVIEW_NAMESPACE}/page`;
+export const PAGE_ID: "storybook/review/page" = `${REVIEW_NAMESPACE}/page`;
 export const REVIEW_CHANGES_URL = '/review/';
 
 // sessionStorage key for the canvas search to return to when leaving review
 // mode (both summary back-to-Storybook and dismiss). Captured while browsing
 // stories/docs outside review mode, so it points at the pre-review canvas.
-export const PRE_REVIEW_RETURN_KEY = `${REVIEW_NAMESPACE}/pre-review-return`;
+export const PRE_REVIEW_RETURN_KEY: "storybook/review/pre-review-return" = `${REVIEW_NAMESPACE}/pre-review-return`;
 
 // sessionStorage marker deduplicating the one-time auto-enter on first landing
 // on the review summary. Reset on dismiss and when a new review payload arrives.
-export const AUTO_ENTERED_SESSION_KEY = `${REVIEW_NAMESPACE}/auto-entered`;
+export const AUTO_ENTERED_SESSION_KEY: "storybook/review/auto-entered" = `${REVIEW_NAMESPACE}/auto-entered`;
 
 // sessionStorage marker for the server `createdAt` of the review the user has
 // opened. Non-review routes only surface a new-review notification while this
 // differs from the active review's `createdAt`.
-export const VISITED_REVIEW_CREATED_AT_KEY = `${REVIEW_NAMESPACE}/visited-created-at`;
+export const VISITED_REVIEW_CREATED_AT_KEY: "storybook/review/visited-created-at" = `${REVIEW_NAMESPACE}/visited-created-at`;
 
 // sessionStorage marker for the `createdAt` of the review currently shown in
 // the sidebar notification. Cleared on accept or dismiss.
-export const NOTIFIED_REVIEW_CREATED_AT_KEY = `${REVIEW_NAMESPACE}/notified-created-at`;
+export const NOTIFIED_REVIEW_CREATED_AT_KEY: "storybook/review/notified-created-at" = `${REVIEW_NAMESPACE}/notified-created-at`;
 
-export const REVIEW_AVAILABLE_NOTIFICATION_ID = `${REVIEW_NAMESPACE}/review-available`;
+export const REVIEW_AVAILABLE_NOTIFICATION_ID: "storybook/review/review-available" = `${REVIEW_NAMESPACE}/review-available`;
 
 export const reviewAvailableNotificationId = (createdAt: number): string =>
   `${REVIEW_AVAILABLE_NOTIFICATION_ID}/${createdAt}`;

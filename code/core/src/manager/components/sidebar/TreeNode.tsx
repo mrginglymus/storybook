@@ -1,12 +1,17 @@
 import type { ComponentProps, FC } from 'react';
 import React from 'react';
 
-import { type FunctionInterpolation, styled } from 'storybook/theming';
+import { type FunctionInterpolation, styled, Theme, StyledComponent } from 'storybook/theming';
 
 import { UseSymbol } from './IconSymbols.tsx';
 import { CollapseIcon } from './components/CollapseIcon.tsx';
 
-export const TypeIcon = styled.svg<{ type: 'component' | 'story' | 'test' | 'group' | 'document' }>(
+export const TypeIcon: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  type: "component" | "story" | "test" | "group" | "document";
+}, React.SVGProps<SVGSVGElement>, {}> = styled.svg<{ type: 'component' | 'story' | 'test' | 'group' | 'document' }>(
   ({ theme, type }) => ({
     width: 14,
     height: 14,
@@ -66,16 +71,32 @@ const commonNodeStyles: FunctionInterpolation<{ depth?: number; isExpandable?: b
   wordBreak: 'break-word',
 });
 
-const BranchNode = styled.button<{
+const BranchNode: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  depth?: number;
+  isExpandable?: boolean;
+  isExpanded?: boolean;
+  isSelected?: boolean;
+}, React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, {}> = styled.button<{
   depth?: number;
   isExpandable?: boolean;
   isExpanded?: boolean;
   isSelected?: boolean;
 }>(commonNodeStyles);
 
-const LeafNode = styled.a<{ depth?: number }>(commonNodeStyles);
+const LeafNode: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  depth?: number;
+}, React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>, {}> = styled.a<{ depth?: number }>(commonNodeStyles);
 
-export const RootNode = styled.div({
+export const RootNode: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',

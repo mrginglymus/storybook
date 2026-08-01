@@ -167,7 +167,7 @@ export type SearchProps = {
   searchFieldContent?: ReactNode;
 };
 
-export const Search = React.memo<SearchProps>(function Search({
+export const Search: React.NamedExoticComponent<SearchProps> = React.memo<SearchProps>(function Search({
   children,
   dataset,
   enableShortcuts = true,

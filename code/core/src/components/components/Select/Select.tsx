@@ -198,7 +198,7 @@ const MinimalistPopover: FC<{
   );
 };
 
-export const Select = forwardRef<HTMLButtonElement, SelectProps>(
+export const Select: React.ForwardRefExoticComponent<Omit<SelectProps, "ref"> & React.RefAttributes<HTMLButtonElement>> = forwardRef<HTMLButtonElement, SelectProps>(
   (
     {
       children,

@@ -221,7 +221,7 @@ export function wrapTextForClackHint(
   width?: number,
   label?: string,
   // Total chars before hint text starts: "│  " + "◼ "
-  _indentSpaces = 3 + 1
+  _indentSpaces: number = 3 + 1
 ): string {
   const terminalWidth = width || getTerminalWidth();
 

@@ -4,7 +4,7 @@ export const YARN_LOCKFILE = 'yarn.lock';
 export const BUN_LOCKFILE = 'bun.lock';
 export const BUN_LOCKFILE_BINARY = 'bun.lockb';
 
-export const LOCK_FILES = [
+export const LOCK_FILES: string[] = [
   NPM_LOCKFILE,
   PNPM_LOCKFILE,
   YARN_LOCKFILE,

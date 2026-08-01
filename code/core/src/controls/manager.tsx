@@ -21,7 +21,7 @@ import { ADDON_ID, PARAM_KEY } from './constants.ts';
 import { trySelectStory } from '../manager/utils/trySelectStory.ts';
 import { stringifyArgs } from './stringifyArgs.tsx';
 
-export default addons.register(ADDON_ID, (api) => {
+const registration: void = addons.register(ADDON_ID, (api) => {
   if (globalThis?.FEATURES?.controls) {
     const channel = addons.getChannel();
     const docgenService = globalThis.FEATURES?.experimentalDocgenServer
@@ -154,3 +154,5 @@ export default addons.register(ADDON_ID, (api) => {
     });
   }
 });
+
+export default registration;

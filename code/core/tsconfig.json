@@ -8,5 +8,22 @@
     "declaration": true,
     "isolatedDeclarations": true
   },
-  "include": ["src/**/*", "scripts/**/*", "*.d.ts", "templates/runtime-build-code.template"]
+  "include": ["src/**/*", "scripts/**/*", "*.d.ts", "templates/runtime-build-code.template"],
+  // Only declaration-emitted source is held to `isolatedDeclarations`. This list mirrors
+  // DTS_EXCLUDES in scripts/build/utils/generate-types-rolldown.ts — those files are never part of
+  // declaration emit, so annotating them buys nothing. They are still fully type-checked, by
+  // ./tsconfig.non-emitted.json. `exclude` replaces (not merges with) the parent's, so the
+  // dist/node_modules entries from ../tsconfig.json are repeated here.
+  "exclude": [
+    "dist",
+    "**/dist",
+    "node_modules",
+    "**/node_modules",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "**/*.stories.*",
+    "**/*.mockdata.*",
+    "**/__tests__/**",
+    "**/__mocks__/**"
+  ]
 }

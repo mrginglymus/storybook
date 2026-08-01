@@ -1,15 +1,17 @@
-import { definePreviewAddon } from 'storybook/internal/csf';
+import { DecoratorFunction, definePreviewAddon, PreviewAddon } from 'storybook/internal/csf';
 
 import { PARAM_KEY } from './constants.ts';
 import type { OutlineTypes } from './types.ts';
 import { withOutline } from './withOutline.ts';
 
-export const decorators = globalThis.FEATURES?.outline ? [withOutline] : [];
+export const decorators: DecoratorFunction[] = globalThis.FEATURES?.outline ? [withOutline] : [];
 
-export const initialGlobals = {
+export const initialGlobals: {
+  outline: boolean;
+} = {
   [PARAM_KEY]: false,
 };
 
 export type { OutlineTypes };
 
-export default () => definePreviewAddon<OutlineTypes>({ decorators, initialGlobals });
+export default (): PreviewAddon<OutlineTypes> => definePreviewAddon<OutlineTypes>({ decorators, initialGlobals });

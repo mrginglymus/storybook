@@ -1,10 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 import { useLocationHash } from '../../hooks/useLocation.ts';
 
-const FocusOutline = styled.div<{ active?: boolean; outlineOffset?: number }>(
+const FocusOutline: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  active?: boolean;
+  outlineOffset?: number;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div<{ active?: boolean; outlineOffset?: number }>(
   ({ theme, active = false, outlineOffset = 0 }) => ({
     width: '100%',
     borderRadius: 'inherit',
@@ -28,7 +34,7 @@ const FocusRing = ({
 }: React.ComponentProps<typeof FocusOutline> & {
   highlightDuration?: number;
   nodeRef?: React.RefObject<HTMLDivElement>;
-}) => {
+}): React.JSX.Element => {
   const [visible, setVisible] = useState(active);
 
   useEffect(() => {
@@ -48,7 +54,7 @@ const FocusTarget = ({
   ...props
 }: Omit<React.ComponentProps<typeof FocusRing>, 'active'> & {
   targetHash: string;
-}) => {
+}): React.JSX.Element => {
   const nodeRef = useRef<HTMLDivElement>(null);
   const locationHash = useLocationHash();
   const [active, setActive] = useState(locationHash === targetHash);
@@ -76,7 +82,30 @@ const FocusTarget = ({
   return <FocusRing {...props} active={active} nodeRef={nodeRef} tabIndex={-1} />;
 };
 
-export const Focus = {
+export const Focus: {
+  Outline: StyledComponent<{
+    theme?: Theme;
+    as?: React.ElementType;
+  } & {
+    active?: boolean;
+    outlineOffset?: number;
+  }, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}>; Proxy: StyledComponent<{
+    theme?: Theme;
+    as?: React.ElementType;
+  } & {
+    active?: boolean;
+    outlineOffset?: number;
+  } & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement> & {
+    theme?: Theme;
+  } & {
+    targetId: string;
+  }, {}, {}>; Ring: ({ active, highlightDuration, nodeRef, ...props }: React.ComponentProps<typeof FocusOutline> & {
+    highlightDuration?: number;
+    nodeRef?: React.RefObject<HTMLDivElement>;
+  }) => React.JSX.Element; Target: ({ targetHash, highlightDuration, ...props }: Omit<React.ComponentProps<typeof FocusRing>, "active"> & {
+    targetHash: string;
+  }) => React.JSX.Element;
+} = {
   Outline: FocusOutline,
   Proxy: FocusProxy,
   Ring: FocusRing,

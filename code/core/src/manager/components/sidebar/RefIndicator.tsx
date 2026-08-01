@@ -14,13 +14,14 @@ import {
   TimeIcon,
 } from '@storybook/icons';
 
-import { useStorybookApi } from 'storybook/manager-api';
-import { styled, useTheme } from 'storybook/theming';
+import { ComposedRef, useStorybookApi } from 'storybook/manager-api';
+import { styled, Theme, StyledComponent, useTheme } from 'storybook/theming';
 
 import type { NormalLink } from '../../../components/components/tooltip/TooltipLinkList.tsx';
 import type { getStateType } from '../../utils/tree.ts';
 import { useLayout } from '../layout/LayoutProvider.tsx';
 import type { RefType } from './types.ts';
+import { d } from '../../../../dist/chunk-Duv0fAMJ';
 
 const { document, window: globalWindow } = global;
 
@@ -109,7 +110,12 @@ const Message: FC<{
   );
 };
 
-export const MessageWrapper = styled.div<{
+export const MessageWrapper: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  isMobile: boolean;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div<{
   isMobile: boolean;
 }>(
   ({ isMobile }) => ({
@@ -130,7 +136,11 @@ const SubtleSelect = styled(Select)(({ theme }) => ({
   fontWeight: theme.typography.weight.regular,
 }));
 
-export const RefIndicator = React.memo(
+export const RefIndicator: React.MemoExoticComponent<React.ForwardRefExoticComponent<ComposedRef & {
+  allStatuses?: d;
+} & {
+  state: ReturnType<typeof getStateType>;
+} & React.RefAttributes<HTMLDivElement>>> = React.memo(
   forwardRef<HTMLDivElement, RefType & { state: ReturnType<typeof getStateType> }>(
     ({ state, ...ref }, forwardedRef) => {
       const api = useStorybookApi();

@@ -8,9 +8,14 @@ import React, {
 } from 'react';
 
 import { useId } from '@react-aria/utils';
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
-const CollapsibleContent = styled.div<{ collapsed?: boolean }>(({ collapsed = false }) => ({
+const CollapsibleContent: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  collapsed?: boolean;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div<{ collapsed?: boolean }>(({ collapsed = false }) => ({
   blockSize: collapsed ? 0 : 'auto',
   contentVisibility: collapsed ? 'hidden' : 'visible',
   transform: collapsed ? 'translateY(-10px)' : 'translateY(0)',
@@ -28,7 +33,22 @@ const CollapsibleContent = styled.div<{ collapsed?: boolean }>(({ collapsed = fa
   },
 }));
 
-export const Collapsible = Object.assign(
+export const Collapsible: (({ children, summary, collapsed, disabled, initialCollapsed, storageKey, state: providedState, ...props }: {
+  children: ReactNode | ((state: ReturnType<typeof useCollapsible>) => ReactNode);
+  summary?: ReactNode | ((state: ReturnType<typeof useCollapsible>) => ReactNode);
+  collapsed?: boolean;
+  disabled?: boolean;
+  initialCollapsed?: boolean;
+  storageKey?: string;
+  state?: ReturnType<typeof useCollapsible>;
+} & ComponentProps<typeof CollapsibleContent>) => React.JSX.Element) & {
+  Content: StyledComponent<{
+    theme?: Theme;
+    as?: React.ElementType;
+  } & {
+    collapsed?: boolean;
+  }, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}>;
+} = Object.assign(
   function Collapsible({
     children,
     summary,
@@ -46,7 +66,7 @@ export const Collapsible = Object.assign(
     initialCollapsed?: boolean;
     storageKey?: string;
     state?: ReturnType<typeof useCollapsible>;
-  } & ComponentProps<typeof CollapsibleContent>) {
+  } & ComponentProps<typeof CollapsibleContent>): React.JSX.Element {
     const internalState = useCollapsible({ collapsed, disabled, initialCollapsed, storageKey });
     const state = providedState || internalState;
     return (
@@ -98,7 +118,14 @@ export const useCollapsible = ({
   disabled?: boolean;
   initialCollapsed?: boolean;
   storageKey?: string;
-}) => {
+}): {
+    contentId: string; isCollapsed: boolean; isDisabled: boolean; setCollapsed: React.Dispatch<React.SetStateAction<boolean>>; toggleCollapsed: (event?: SyntheticEvent<Element, Event>) => void; toggleProps: {
+      readonly disabled: boolean | undefined;
+      readonly onClick: (event?: SyntheticEvent<Element, Event>) => void;
+      readonly 'aria-controls': string;
+      readonly 'aria-expanded': boolean;
+    };
+  } => {
   const [isCollapsed, setCollapsed] = useSessionState(
     storageKey && `useCollapsible:${storageKey}`,
     !!initialCollapsed
@@ -111,7 +138,7 @@ export const useCollapsible = ({
   }, [collapsed, setCollapsed]);
 
   const toggleCollapsed = useCallback(
-    (event?: SyntheticEvent<Element, Event>) => {
+    (event?: SyntheticEvent<Element, Event>): void => {
       event?.stopPropagation();
       if (!disabled) {
         setCollapsed((value) => !value);

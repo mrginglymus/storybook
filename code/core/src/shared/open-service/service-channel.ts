@@ -48,7 +48,10 @@ const stateSnapshotSchema = v.custom<Record<string, unknown>>(
 );
 
 /** Sent by a newly-registered peer to initialize its state from any existing peer. */
-export const syncStartSchema = v.object({
+export const syncStartSchema: v.ObjectSchema<{
+  readonly serviceId: v.StringSchema<undefined>;
+  readonly clientId: v.StringSchema<undefined>;
+}, undefined> = v.object({
   serviceId: v.string(),
   clientId: v.string(),
 });
@@ -60,7 +63,12 @@ export type SyncStartPayload = v.InferOutput<typeof syncStartSchema>;
  * registered peer). Recipients apply it only when it is strictly newer than their own (see `isNewer`
  * in `service-sync.ts`), which suppresses echoes, breaks relay cycles, and converges concurrent writes.
  */
-export const stampedSnapshotSchema = v.object({
+export const stampedSnapshotSchema: v.ObjectSchema<{
+  readonly serviceId: v.StringSchema<undefined>;
+  readonly state: v.CustomSchema<Record<string, unknown>, undefined>;
+  readonly version: v.SchemaWithPipe<readonly [v.NumberSchema<undefined>, v.SafeIntegerAction<number, undefined>, v.MinValueAction<number, 0, undefined>]>;
+  readonly clientId: v.StringSchema<undefined>;
+}, undefined> = v.object({
   serviceId: v.string(),
   state: stateSnapshotSchema,
   version: v.pipe(v.number(), v.safeInteger(), v.minValue(0)),
@@ -77,7 +85,13 @@ export type SyncStartReplyPayload = StampedSnapshotPayload;
  * error carrying the same `callId`. The requester awaits its promise until one of those arrives.
  * `input` is the raw (unvalidated) command input; the implementing peer validates it before running.
  */
-export const commandInvokeSchema = v.object({
+export const commandInvokeSchema: v.ObjectSchema<{
+  readonly serviceId: v.StringSchema<undefined>;
+  readonly commandName: v.StringSchema<undefined>;
+  readonly input: v.OptionalSchema<v.UnknownSchema, undefined>;
+  readonly callId: v.StringSchema<undefined>;
+  readonly clientId: v.StringSchema<undefined>;
+}, undefined> = v.object({
   serviceId: v.string(),
   commandName: v.string(),
   input: v.optional(v.unknown()),
@@ -93,7 +107,11 @@ export type CommandInvokePayload = v.InferOutput<typeof commandInvokeSchema>;
  * within a short window, the request rejects as unhandled. The requester still resolves/rejects on
  * the result/error reply once a peer has acknowledged.
  */
-export const commandAckSchema = v.object({
+export const commandAckSchema: v.ObjectSchema<{
+  readonly serviceId: v.StringSchema<undefined>;
+  readonly callId: v.StringSchema<undefined>;
+  readonly clientId: v.StringSchema<undefined>;
+}, undefined> = v.object({
   serviceId: v.string(),
   callId: v.string(),
   clientId: v.string(),
@@ -101,7 +119,12 @@ export const commandAckSchema = v.object({
 export type CommandAckPayload = v.InferOutput<typeof commandAckSchema>;
 
 /** Sent by an implementing peer after a remote command resolves successfully. */
-export const commandResultSchema = v.object({
+export const commandResultSchema: v.ObjectSchema<{
+  readonly serviceId: v.StringSchema<undefined>;
+  readonly callId: v.StringSchema<undefined>;
+  readonly result: v.OptionalSchema<v.UnknownSchema, undefined>;
+  readonly clientId: v.StringSchema<undefined>;
+}, undefined> = v.object({
   serviceId: v.string(),
   callId: v.string(),
   result: v.optional(v.unknown()),
@@ -114,7 +137,12 @@ export type CommandResultPayload = v.InferOutput<typeof commandResultSchema>;
  * (including its `cause` chain) so the requester can rethrow a real `Error`; it is only checked for
  * "is a plain object" here and reconstructed in `service-error-serialization.ts`.
  */
-export const commandErrorSchema = v.object({
+export const commandErrorSchema: v.ObjectSchema<{
+  readonly serviceId: v.StringSchema<undefined>;
+  readonly callId: v.StringSchema<undefined>;
+  readonly error: v.CustomSchema<SerializedError, undefined>;
+  readonly clientId: v.StringSchema<undefined>;
+}, undefined> = v.object({
   serviceId: v.string(),
   callId: v.string(),
   error: v.custom<SerializedError>(

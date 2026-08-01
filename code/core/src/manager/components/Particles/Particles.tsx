@@ -110,11 +110,13 @@ const JITTER = 15;
 const random = (min: number, max: number) => Math.random() * (max - min) + min;
 const sortRandomly = (array: any[]) => array.sort(() => Math.random() - 0.5);
 
-export const Particles = memo(function Particles({
+export const Particles: React.MemoExoticComponent<({ anchor: Anchor, }: {
+  anchor: React.ElementType;
+}) => React.JSX.Element> = memo(function Particles({
   anchor: Anchor,
 }: {
   anchor: React.ElementType;
-}) {
+}): React.JSX.Element {
   const anchorRef = useRef<HTMLDivElement>(null);
   const [left, setLeft] = useState(0);
   const [top, setTop] = useState(0);

@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, RefObject, SetStateAction } from 'react';
 import { useEffect, useRef } from 'react';
 
 import type { API_Layout } from 'storybook/internal/types';
@@ -120,7 +120,12 @@ export function useDragging({
   navSize: number;
   rightPanelWidth: number;
   panelPosition: API_Layout['panelPosition'];
-}) {
+}): {
+  panelResizerRef: RefObject<HTMLDivElement>;
+  sidebarResizerRef: RefObject<HTMLDivElement>;
+  sidebarMaxWidth: number;
+  panelMaxSize: number;
+} {
   const panelResizerRef = useRef<HTMLDivElement>(null);
   const sidebarResizerRef = useRef<HTMLDivElement>(null);
 

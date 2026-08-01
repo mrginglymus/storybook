@@ -1,8 +1,12 @@
-import { Link } from 'storybook/internal/router';
+import { DetailedHTMLProps, HTMLAttributes } from 'react';
+import { Link, LinkProps } from 'storybook/internal/router';
 
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
-export const PreviewContainer = styled.div({
+export const PreviewContainer: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
@@ -10,14 +14,22 @@ export const PreviewContainer = styled.div({
   overflow: 'hidden',
 });
 
-export const FrameWrap = styled.main(({ theme }) => ({
+export const FrameWrap: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>, {}> = styled.main(({ theme }) => ({
   overflow: 'auto',
   width: '100%',
   zIndex: 3,
   background: theme.background.app,
   flex: 1,
 }));
-export const CanvasWrap = styled.div<{ show: boolean }>(
+export const CanvasWrap: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  show: boolean;
+}, DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div<{ show: boolean }>(
   {
     alignContent: 'center',
     alignItems: 'center',
@@ -33,20 +45,28 @@ export const CanvasWrap = styled.div<{ show: boolean }>(
   ({ show }) => ({ display: show ? 'grid' : 'none' })
 );
 
-export const UnstyledLink = styled(Link)({
+export const UnstyledLink: StyledComponent<LinkProps & {
+  theme?: Theme;
+}, {}, {}> = styled(Link)({
   color: 'inherit',
   textDecoration: 'inherit',
   display: 'inline-block',
 });
 
-export const DesktopOnly = styled.span({
+export const DesktopOnly: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>, {}> = styled.span({
   // Hides full screen icon at mobile breakpoint defined in app.js
   '@media (max-width: 599px)': {
     display: 'none',
   },
 });
 
-export const IframeWrapper = styled.div(({ theme }) => ({
+export const IframeWrapper: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div(({ theme }) => ({
   alignContent: 'center',
   alignItems: 'center',
   justifyContent: 'center',
@@ -62,7 +82,10 @@ export const IframeWrapper = styled.div(({ theme }) => ({
   height: '100%',
 }));
 
-export const LoaderWrapper = styled.div(({ theme }) => ({
+export const LoaderWrapper: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div(({ theme }) => ({
   position: 'absolute',
   top: 0,
   left: 0,

@@ -1,12 +1,12 @@
 import type { ComponentProps } from 'react';
 import React, { forwardRef } from 'react';
 
-import { Button } from 'storybook/internal/components';
+import { Button, ButtonProps } from 'storybook/internal/components';
 import type { StatusValue } from 'storybook/internal/types';
 
 import type { Theme } from '@emotion/react';
 import { darken, lighten } from 'polished';
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 import { getStatus } from '../../utils/status.tsx';
 
@@ -14,13 +14,25 @@ const withStatusColor = ({ theme, status }: { theme: Theme; status: StatusValue 
   color: getStatus(theme, status).iconColor ?? undefined,
 });
 
-export const StatusLabel = styled.div<{ status: StatusValue }>(withStatusColor, {
+export const StatusLabel: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  status: StatusValue;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div<{ status: StatusValue }>(withStatusColor, {
   margin: 3,
 });
 
 export type StatusButtonProps = ComponentProps<typeof StyledButton>;
 
-const StyledButton = styled(Button)<{
+const StyledButton: StyledComponent<Omit<ButtonProps, "ref"> & React.RefAttributes<HTMLButtonElement> & {
+  theme?: Theme;
+} & {
+  height?: number;
+  width?: number;
+  status: StatusValue;
+  selectedItem?: boolean;
+}, {}, {}> = styled(Button)<{
   height?: number;
   width?: number;
   status: StatusValue;
@@ -73,7 +85,14 @@ const StyledButton = styled(Button)<{
     }
 );
 
-export const StatusButton = forwardRef<HTMLButtonElement, StatusButtonProps>((props, ref) => {
+export const StatusButton: React.ForwardRefExoticComponent<Omit<Omit<ButtonProps, "ref"> & React.RefAttributes<HTMLButtonElement> & {
+  theme?: Theme;
+} & {
+  height?: number;
+  width?: number;
+  status: StatusValue;
+  selectedItem?: boolean;
+}, "ref"> & React.RefAttributes<HTMLButtonElement>> = forwardRef<HTMLButtonElement, StatusButtonProps>((props, ref) => {
   return <StyledButton variant="ghost" padding="small" {...props} ref={ref} />;
 });
 StatusButton.displayName = 'StatusButton';

@@ -1,12 +1,12 @@
 import type { ComponentProps, FC } from 'react';
 import React, { useState } from 'react';
 
-import { ActionList, Button, PopoverProvider, ToggleButton } from 'storybook/internal/components';
+import { ActionList, Button, ButtonProps, PopoverProvider, ToggleButton } from 'storybook/internal/components';
 
 import { CloseIcon, CogIcon } from '@storybook/icons';
 
 import { transparentize } from 'polished';
-import { type Theme, css, styled } from 'storybook/theming';
+import { StyledComponent, type Theme, css, styled } from 'storybook/theming';
 
 import type { useMenu } from '../../container/Menu.tsx';
 import { useLayout } from '../layout/LayoutProvider.tsx';
@@ -63,14 +63,24 @@ const Container = styled.div({
   minWidth: 250,
 });
 
-export const SidebarButton = styled(Button)<
+export const SidebarButton: StyledComponent<Omit<ButtonProps, "ref"> & React.RefAttributes<HTMLButtonElement> & {
+  theme?: Theme;
+} & {
+  highlighted: boolean;
+  isMobile: boolean;
+}, {}, {}> = styled(Button)<
   ComponentProps<typeof Button> & {
     highlighted: boolean;
     isMobile: boolean;
   }
 >(buttonStyleAdditions);
 
-export const SidebarToggleButton = styled(ToggleButton)<
+export const SidebarToggleButton: StyledComponent<Omit<ToggleButtonProps, "ref"> & React.RefAttributes<HTMLButtonElement> & {
+  theme?: Theme;
+} & {
+  highlighted: boolean;
+  isMobile: boolean;
+}, {}, {}> = styled(ToggleButton)<
   ComponentProps<typeof ToggleButton> & {
     highlighted: boolean;
     isMobile: boolean;

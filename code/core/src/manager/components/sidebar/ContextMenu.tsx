@@ -43,7 +43,10 @@ export const useContextMenu = (
   links: Link[],
   api: API,
   visibleStatus?: { icon: ReactElement | null; status: StatusValue } | null
-) => {
+): {
+    onMouseEnter: () => void;
+    node: React.JSX.Element | null;
+  } => {
   const [hoverCount, setHoverCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 

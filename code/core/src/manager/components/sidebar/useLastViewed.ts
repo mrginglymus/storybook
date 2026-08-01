@@ -7,7 +7,10 @@ import type { Selection, StoryRef } from './types.ts';
 
 const save = debounce((value) => store.set('lastViewedStoryIds', value), 1000);
 
-export const useLastViewed = (selection: Selection) => {
+export const useLastViewed = (selection: Selection): {
+  getLastViewed: () => StoryRef[];
+  clearLastViewed: () => void;
+} => {
   const initialLastViewedStoryIds = useMemo((): StoryRef[] => {
     const items = store.get('lastViewedStoryIds');
 

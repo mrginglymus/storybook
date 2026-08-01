@@ -8,7 +8,7 @@ import { CloseAltIcon } from '@storybook/icons';
 
 import { transparentize } from 'polished';
 import { type State } from 'storybook/manager-api';
-import { keyframes, styled } from 'storybook/theming';
+import { keyframes, styled, Theme, StyledComponent } from 'storybook/theming';
 
 import { MEDIA_DESKTOP_BREAKPOINT } from '../../constants.ts';
 
@@ -166,7 +166,10 @@ const DismissNotificationItem: FC<{
   </DismissButtonWrapper>
 );
 
-export const NotificationItemSpacer = styled.div({
+export const NotificationItemSpacer: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div({
   height: 48,
 });
 

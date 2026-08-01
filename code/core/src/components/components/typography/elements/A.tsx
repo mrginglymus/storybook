@@ -1,10 +1,13 @@
-import type { CSSObject } from 'storybook/theming';
+import type { CSSObject, Theme, StyledComponent } from 'storybook/theming';
 import { styled } from 'storybook/theming';
 
 import { withReset } from '../lib/common.tsx';
 import { Link } from './Link.tsx';
+import { AnchorHTMLAttributes } from 'react';
 
-export const A = styled(Link)(({ theme }) => ({
+export const A: StyledComponent<AnchorHTMLAttributes<HTMLAnchorElement> & {
+  theme?: Theme;
+}, {}, {}> = styled(Link)(({ theme }) => ({
   ...(withReset({ theme }) as CSSObject),
   fontSize: 'inherit',
   lineHeight: '24px',

@@ -4,7 +4,7 @@ import React, { Fragment, forwardRef, useEffect, useRef } from 'react';
 import { ActionBar, ScrollArea } from 'storybook/internal/components';
 
 import { Inspector } from 'react-inspector';
-import type { Theme } from 'storybook/theming';
+import type { StyledComponent, Theme } from 'storybook/theming';
 import { styled, withTheme } from 'storybook/theming';
 
 import type { ActionDisplay } from '../../models/index.ts';
@@ -19,7 +19,12 @@ const UnstyledWrapped = forwardRef<HTMLDivElement, { children: ReactNode; classN
 );
 UnstyledWrapped.displayName = 'UnstyledWrapped';
 
-export const Wrapper = styled(UnstyledWrapped)({
+export const Wrapper: StyledComponent<{
+  children: ReactNode;
+  className?: string;
+} & React.RefAttributes<HTMLDivElement> & {
+  theme?: Theme;
+}, {}, {}> = styled(UnstyledWrapped)({
   margin: 0,
   padding: '10px 5px 20px',
 });
@@ -43,7 +48,7 @@ interface ActionLoggerProps {
   onClear: () => void;
 }
 
-export const ActionLogger = ({ actions, expandLevel, onClear }: ActionLoggerProps) => {
+export const ActionLogger = ({ actions, expandLevel, onClear }: ActionLoggerProps): React.JSX.Element => {
   const wrapperRef = useRef<ElementRef<typeof Wrapper>>(null);
   const wrapper = wrapperRef.current;
   const wasAtBottom = wrapper && wrapper.scrollHeight - wrapper.scrollTop === wrapper.clientHeight;

@@ -81,12 +81,12 @@ interface FileItemComponentSelectionPayload {
   id: string;
 }
 
-export const FileSearchList = memo(function FileSearchList({
+export const FileSearchList: React.MemoExoticComponent<({ isLoading, searchResults, onNewStory, errorItemId, }: FileSearchListProps) => React.JSX.Element | null> = memo(function FileSearchList({
   isLoading,
   searchResults,
   onNewStory,
   errorItemId,
-}: FileSearchListProps) {
+}: FileSearchListProps): React.JSX.Element | null {
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
   const parentRef = React.useRef<HTMLDivElement>();
 

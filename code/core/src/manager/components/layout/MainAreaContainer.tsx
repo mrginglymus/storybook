@@ -69,7 +69,7 @@ interface MainAreaContainerProps {
  * Shows Router-controlled pages (e.g. settings/about), inside a landmark for navigability, OR shows
  * the preview area. Ensures a single `main` landmark exists at a time.
  */
-const MainAreaContainer = React.memo<MainAreaContainerProps>(function MainAreaContainer({
+const MainAreaContainer: React.NamedExoticComponent<MainAreaContainerProps> = React.memo<MainAreaContainerProps>(function MainAreaContainer({
   showPages,
   slotMain,
   slotPages,

@@ -482,7 +482,7 @@ export function createServiceRuntime<
 }
 
 /** Re-export so external modules can address the in-flight load registry for tests if needed. */
-export const __internalInFlightLoads = inFlightLoads;
+export const __internalInFlightLoads: Map<string, Promise<unknown>> = inFlightLoads;
 
 /** Type referenced from the registry surface for cross-service callers. */
 export type { RuntimeService };

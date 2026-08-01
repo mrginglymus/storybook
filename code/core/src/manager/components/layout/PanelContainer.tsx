@@ -31,7 +31,7 @@ const PanelSlot = styled.div({
  * reopen the panel. The panel is always rendered (to preserve internal state), but it's excluded
  * from the Accessibility Object Model when effectively collapsed.
  */
-const PanelContainer = React.memo<PanelContainerProps>(function PanelContainer(props) {
+const PanelContainer: React.NamedExoticComponent<PanelContainerProps> = React.memo<PanelContainerProps>(function PanelContainer(props) {
   const { children, bottomPanelHeight, rightPanelWidth, panelMaxSize, panelResizerRef, position } =
     props;
 

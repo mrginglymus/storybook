@@ -95,4 +95,6 @@ export const inferControls: ((context: InferControlsContext) => StrictArgTypes) 
 
 inferControls.secondPass = true;
 
-export const argTypesEnhancers = [inferControls];
+export const argTypesEnhancers: (((context: InferControlsContext) => StrictArgTypes) & {
+  secondPass?: boolean;
+})[] = [inferControls];

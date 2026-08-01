@@ -56,7 +56,7 @@ export class HooksContext<TRenderer extends Renderer, TArgs extends Args = Args>
 
   currentContext: StoryContext<TRenderer, TArgs> | null = undefined as any;
 
-  renderListener = (storyId: StoryId) => {
+  renderListener = (storyId: StoryId): void => {
     if (storyId !== this.currentContext?.id) {
       return;
     }
@@ -69,7 +69,7 @@ export class HooksContext<TRenderer extends Renderer, TArgs extends Args = Args>
     this.init();
   }
 
-  init() {
+  init(): void {
     this.hookListsMap = new WeakMap();
     this.mountedDecorators = new Set();
     this.prevMountedDecorators = new Set();
@@ -83,7 +83,7 @@ export class HooksContext<TRenderer extends Renderer, TArgs extends Args = Args>
     this.currentContext = null;
   }
 
-  clean() {
+  clean(): void {
     this.prevEffects.forEach((effect) => {
       if (effect.destroy) {
         effect.destroy();
@@ -93,13 +93,13 @@ export class HooksContext<TRenderer extends Renderer, TArgs extends Args = Args>
     this.removeRenderListeners();
   }
 
-  getNextHook() {
+  getNextHook(): Hook {
     const hook = this.currentHooks[this.nextHookIndex];
     this.nextHookIndex += 1;
     return hook;
   }
 
-  triggerEffects() {
+  triggerEffects(): void {
     // destroy removed effects
     this.prevEffects.forEach((effect) => {
       if (!this.currentEffects.includes(effect) && effect.destroy) {
@@ -116,13 +116,13 @@ export class HooksContext<TRenderer extends Renderer, TArgs extends Args = Args>
     this.currentEffects = [];
   }
 
-  addRenderListeners() {
+  addRenderListeners(): void {
     this.removeRenderListeners();
     const channel = addons.getChannel();
     channel.on(STORY_RENDERED, this.renderListener);
   }
 
-  removeRenderListeners() {
+  removeRenderListeners(): void {
     const channel = addons.getChannel();
     channel.removeListener(STORY_RENDERED, this.renderListener);
   }
@@ -527,7 +527,7 @@ export interface EventMap {
  *   the event listeners will be re-subscribed. Default is `[]`
  * @returns {(...args: any[]) => void} A function to emit events to the Storybook channel.
  */
-export function useChannel(eventMap: EventMap, deps: any[] = []) {
+export function useChannel(eventMap: EventMap, deps: any[] = []): (eventName: string, ...args: any) => void {
   const channel = addons.getChannel();
 
   useEffect(() => {

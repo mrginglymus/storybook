@@ -95,7 +95,7 @@ const CRITICAL_YARN2_ERROR_CODES = {
 
 // This encompasses Yarn Berry (v2+)
 export class Yarn2Proxy extends JsPackageManager {
-  readonly type = PackageManagerName.YARN2;
+  readonly type: PackageManagerName.YARN2 = PackageManagerName.YARN2;
 
   installArgs: string[] | undefined;
 
@@ -142,7 +142,7 @@ export class Yarn2Proxy extends JsPackageManager {
     args: string[],
     cwd?: string,
     stdio?: 'inherit' | 'pipe' | 'ignore'
-  ) {
+  ): ResultPromise {
     return executeCommand({
       command: 'yarn',
       args: [command, ...args],
@@ -151,7 +151,7 @@ export class Yarn2Proxy extends JsPackageManager {
     });
   }
 
-  public async findInstallations(pattern: string[], { depth = 99 }: { depth?: number } = {}) {
+  public async findInstallations(pattern: string[], { depth = 99 }: { depth?: number } = {}): Promise<InstallationMetadata | undefined> {
     const yarnArgs = ['info', '--name-only'];
 
     if (depth !== 0) {
@@ -241,7 +241,11 @@ export class Yarn2Proxy extends JsPackageManager {
     return packageJson;
   }
 
-  protected getResolutions(packageJson: PackageJson, versions: Record<string, string>) {
+  protected getResolutions(packageJson: PackageJson, versions: Record<string, string>): {
+    resolutions: {
+      [x: string]: string | undefined;
+    };
+  } {
     return {
       resolutions: {
         ...packageJson.resolutions,
@@ -250,7 +254,7 @@ export class Yarn2Proxy extends JsPackageManager {
     };
   }
 
-  protected runInstall() {
+  protected runInstall(): ResultPromise {
     return executeCommand({
       command: 'yarn',
       args: ['install', ...this.getInstallArgs()],
@@ -259,7 +263,7 @@ export class Yarn2Proxy extends JsPackageManager {
     });
   }
 
-  async installDependencies(options?: { force?: boolean }) {
+  async installDependencies(options?: { force?: boolean }): Promise<void> {
     try {
       await super.installDependencies(options);
     } catch (error) {
@@ -390,7 +394,7 @@ export class Yarn2Proxy extends JsPackageManager {
     throw rerunError;
   }
 
-  protected runAddDeps(dependencies: string[], installAsDevDependencies: boolean) {
+  protected runAddDeps(dependencies: string[], installAsDevDependencies: boolean): ResultPromise {
     let args = [...dependencies];
 
     if (installAsDevDependencies) {
@@ -405,7 +409,7 @@ export class Yarn2Proxy extends JsPackageManager {
     });
   }
 
-  public async getRegistryURL() {
+  public async getRegistryURL(): Promise<string | undefined> {
     const process = executeCommand({
       command: 'yarn',
       args: ['config', 'get', 'npmRegistryServer'],

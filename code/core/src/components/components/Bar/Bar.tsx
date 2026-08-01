@@ -2,7 +2,7 @@ import React, { Children, forwardRef } from 'react';
 
 import { deprecate } from 'storybook/internal/client-logger';
 
-import { type CSSObject, styled } from 'storybook/theming';
+import { type CSSObject, styled, Theme, StyledComponent } from 'storybook/theming';
 
 export interface BarProps {
   backgroundColor?: string;
@@ -49,7 +49,7 @@ const HeightPreserver = styled.div<Pick<BarProps, 'innerStyle'>>(({ innerStyle }
   ...innerStyle,
 }));
 
-export const Bar = forwardRef<HTMLDivElement, BarProps>(
+export const Bar: React.ForwardRefExoticComponent<BarProps & React.RefAttributes<HTMLDivElement>> = forwardRef<HTMLDivElement, BarProps>(
   ({ scrollable = true, children, innerStyle, ...rest }, ref) => {
     return (
       <StyledBar
@@ -76,7 +76,10 @@ export interface SideProps {
   scrollable?: boolean;
 }
 
-export const Side = styled.div<SideProps>(
+export const Side: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & SideProps, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div<SideProps>(
   {
     display: 'flex',
     whiteSpace: 'nowrap',
@@ -126,7 +129,10 @@ const BarWithoutPadding = styled(Bar)({
   paddingInline: 0,
 });
 
-export const FlexBar = ({ children, backgroundColor, className = '', ...rest }: FlexBarProps) => {
+export const FlexBar: {
+  ({ children, backgroundColor, className, ...rest }: FlexBarProps): React.JSX.Element;
+  displayName: string;
+} = ({ children, backgroundColor, className = '', ...rest }: FlexBarProps): React.JSX.Element => {
   deprecate('FlexBar is deprecated. Use Bar with justifyContent: "space-between" instead.');
   const [left, right] = Children.toArray(children);
   return (

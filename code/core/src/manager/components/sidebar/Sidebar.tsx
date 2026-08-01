@@ -107,7 +107,7 @@ export interface SidebarProps extends API_LoadedRefData {
   indexJson?: StoryIndex;
   isDevelopment?: boolean;
 }
-export const Sidebar = React.memo(function Sidebar({
+export const Sidebar: React.MemoExoticComponent<({ storyId, refId, index, indexJson, indexError, allStatuses, previewInitialized, menu, menuHighlighted, enableShortcuts, isDevelopment, refs, onMenuClick, showCreateStoryButton, }: SidebarProps) => React.JSX.Element> = React.memo(function Sidebar({
   // @ts-expect-error (non strict)
   storyId = null,
   refId = DEFAULT_REF_ID,
@@ -123,7 +123,7 @@ export const Sidebar = React.memo(function Sidebar({
   refs = {},
   onMenuClick,
   showCreateStoryButton = isDevelopment && isRendererReact,
-}: SidebarProps) {
+}: SidebarProps): React.JSX.Element {
   const [isFileSearchModalOpen, setIsFileSearchModalOpen] = useState(false);
   // @ts-expect-error (non strict)
   const selected: Selection = useMemo(() => storyId && { storyId, refId }, [storyId, refId]);

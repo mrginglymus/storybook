@@ -1,9 +1,9 @@
-import { fn } from 'storybook/test';
+import { fn, Mock } from 'storybook/test';
 
 export * from './root.tsx';
 export { Tag } from '../shared/constants/tags.ts';
 
-export const openInEditor = fn();
+export const openInEditor: Mock<(...args: any[]) => any> = fn();
 
 export { UniversalStore as experimental_UniversalStore } from '../shared/universal-store/index.ts';
 export { useUniversalStore as experimental_useUniversalStore } from '../shared/universal-store/use-universal-store-manager.ts';

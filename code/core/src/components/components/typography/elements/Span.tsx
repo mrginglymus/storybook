@@ -1,9 +1,13 @@
-import type { CSSObject } from 'storybook/theming';
+import type { CSSObject, Theme, StyledComponent } from 'storybook/theming';
 import { styled } from 'storybook/theming';
 
 import { withReset } from '../lib/common.tsx';
+import { DetailedHTMLProps, HTMLAttributes } from 'react';
 
-export const Span = styled.span(({ theme }) => ({
+export const Span: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>, {}> = styled.span(({ theme }) => ({
   ...(withReset({ theme }) as CSSObject),
   '&.frame': {
     display: 'block',

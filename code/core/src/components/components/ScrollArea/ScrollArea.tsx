@@ -92,7 +92,7 @@ const ScrollAreaThumb = styled(ScrollAreaPrimitive.Thumb)(({ theme }) => ({
   },
 }));
 
-export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(
+export const ScrollArea: React.ForwardRefExoticComponent<ScrollAreaProps & React.RefAttributes<HTMLDivElement>> = forwardRef<HTMLDivElement, ScrollAreaProps>(
   (
     {
       children,

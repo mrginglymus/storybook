@@ -68,13 +68,13 @@ export default class Store {
     this.upstreamGetState = getState;
   }
 
-  registerPersistenceHandler(key: string, handler: PersistenceHandler) {
+  registerPersistenceHandler(key: string, handler: PersistenceHandler): void {
     this.persistenceHandlers.set(key, handler);
   }
 
   // The assumption is that this will be called once, to initialize the React state
   // when the module is instantiated
-  getInitialState(base: State) {
+  getInitialState(base: State): any {
     // TODO: Remove in SB 11
     // One-time migration: tag filter state moved from localStorage to URL persistence.
     // Remove the old keys so they no longer interfere with URL-derived initial state.
@@ -95,7 +95,7 @@ export default class Store {
     return { ...base, ...local, ...session };
   }
 
-  getState() {
+  getState(): State {
     return this.upstreamGetState();
   }
 

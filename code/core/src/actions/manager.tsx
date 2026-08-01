@@ -6,7 +6,7 @@ import { Title } from './components/Title.tsx';
 import { ADDON_ID, PANEL_ID, PARAM_KEY } from './constants.ts';
 import ActionLogger from './containers/ActionLogger/index.tsx';
 
-export default addons.register(ADDON_ID, (api) => {
+const registration: void = addons.register(ADDON_ID, (api) => {
   if (globalThis?.FEATURES?.actions) {
     addons.add(PANEL_ID, {
       title: Title,
@@ -16,3 +16,5 @@ export default addons.register(ADDON_ID, (api) => {
     });
   }
 });
+
+export default registration;

@@ -45,7 +45,7 @@ export const createCanvasTab = (): Addon_BaseType => ({
   render: () => null,
 });
 
-const Preview = React.memo<PreviewProps>(function Preview(props) {
+const Preview: React.NamedExoticComponent<PreviewProps> = React.memo<PreviewProps>(function Preview(props) {
   const {
     api,
     id: previewId,
@@ -241,7 +241,7 @@ const Canvas: FC<{
   );
 };
 
-export function filterTabs(panels: Addon_BaseType[], parameters?: Record<string, any> | undefined) {
+export function filterTabs(panels: Addon_BaseType[], parameters?: Record<string, any> | undefined): Addon_BaseType[] {
   const { previewTabs } = addons.getConfig();
   const parametersTabs = parameters ? parameters.previewTabs : undefined;
 

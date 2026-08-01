@@ -51,7 +51,7 @@ class LogTracker {
    * @param message - The log message
    * @param metadata - Optional metadata to attach to the log, can be any JSON serializable value
    */
-  addLog(level: LogEntry['level'], message: string, metadata?: Metadata) {
+  addLog(level: LogEntry['level'], message: string, metadata?: Metadata): void {
     this.#logs.push({
       timestamp: new Date(),
       level,
@@ -92,4 +92,4 @@ class LogTracker {
   }
 }
 
-export const logTracker = new LogTracker();
+export const logTracker: LogTracker = new LogTracker();

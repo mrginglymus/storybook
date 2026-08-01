@@ -1,12 +1,15 @@
 import React, { Fragment } from 'react';
 
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 export interface SeparatorProps {
   force?: boolean;
 }
 
-export const Separator = styled.span<SeparatorProps>(
+export const Separator: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & SeparatorProps, React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>, {}> = styled.span<SeparatorProps>(
   ({ theme }) => ({
     display: 'inline-block',
     width: 1,
@@ -26,7 +29,7 @@ export const Separator = styled.span<SeparatorProps>(
 );
 Separator.displayName = 'Separator';
 
-export const interleaveSeparators = (list: any[]) =>
+export const interleaveSeparators = (list: any[]): any =>
   list.reduce(
     (acc, item, index) =>
       item ? (

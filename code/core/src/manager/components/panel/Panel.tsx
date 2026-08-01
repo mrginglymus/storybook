@@ -84,7 +84,14 @@ const PreRenderAddons = ({ panels }: { panels: Record<string, Addon_BaseType> })
   ));
 };
 
-export const AddonPanel = React.memo<{
+export const AddonPanel: React.NamedExoticComponent<{
+  selectedPanel?: string;
+  actions: { onSelect: (id: string) => void; } & Record<string, any>;
+  panels: Record<string, Addon_BaseType>;
+  shortcuts: State["shortcuts"];
+  panelPosition?: "bottom" | "right";
+  absolute?: boolean;
+}> = React.memo<{
   selectedPanel?: string;
   actions: { onSelect: (id: string) => void } & Record<string, any>;
   panels: Record<string, Addon_BaseType>;

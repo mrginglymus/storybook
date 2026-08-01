@@ -1,0 +1,26 @@
+{
+  // Type-checks the files ./tsconfig.json excludes: tests, stories and mock data. They are never
+  // part of declaration emit (see DTS_EXCLUDES in scripts/build/utils/generate-types-rolldown.ts),
+  // so `isolatedDeclarations` is off here — Storybook's own stories use the inference-driven CSF
+  // Factories API (`preview.meta(...)` / `meta.story(...)`), which has no nameable type to annotate.
+  // scripts/check/check-package.ts runs this config in addition to ./tsconfig.json.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "isolatedDeclarations": false
+  },
+  "include": [
+    "src/**/*.test.*",
+    "src/**/*.spec.*",
+    "src/**/*.stories.*",
+    "src/**/*.mockdata.*",
+    "src/**/__tests__/**",
+    "src/**/__mocks__/**",
+    // Ambient declarations (e.g. `globalThis.FEATURES` in src/**/typings.d.ts). ./tsconfig.json
+    // picks these up via its broad `src/**/*`; this config's include list is narrow, so they have
+    // to be named explicitly or every global reference resolves to an implicit any.
+    "src/**/*.d.ts",
+    "*.d.ts"
+  ],
+  "exclude": ["dist", "**/dist", "node_modules", "**/node_modules"]
+}

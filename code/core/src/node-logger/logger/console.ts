@@ -1,6 +1,7 @@
 import picocolors from 'picocolors';
 
 import { debug, error, log, warn } from './logger.ts';
+import { Formatter } from 'picocolors/types';
 
 interface ConsoleLoggerOptions {
   prefix: string;
@@ -24,10 +25,10 @@ interface ConsoleLoggerOptions {
 }
 
 class ConsoleLogger implements Console {
-  Console = ConsoleLogger;
+  Console: typeof ConsoleLogger = ConsoleLogger;
 
-  protected timers = new Map<string, number>();
-  protected counters = new Map<string, number>();
+  protected timers: Map<string, number> = new Map<string, number>();
+  protected counters: Map<string, number> = new Map<string, number>();
   protected lastStatusLine: string | null = null;
   protected statusLineCount = 0;
 
@@ -332,7 +333,7 @@ class StyledConsoleLogger extends ConsoleLogger {
     return this._prefix;
   }
 
-  protected get color() {
+  protected get color(): Formatter {
     return picocolors[this._color];
   }
 }

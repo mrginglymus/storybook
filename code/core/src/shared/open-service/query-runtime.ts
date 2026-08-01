@@ -69,7 +69,7 @@ type LoadedSession = {
  * refire it. The same registry is consulted by both same-service and cross-service callers so two
  * queries that depend on the same dependency share one load.
  */
-export const inFlightLoads = new Map<string, Promise<unknown>>();
+export const inFlightLoads: Map<string, Promise<unknown>> = new Map<string, Promise<unknown>>();
 
 /**
  * Active session for `.loaded()` while a sync handler is being re-run for dependency discovery.

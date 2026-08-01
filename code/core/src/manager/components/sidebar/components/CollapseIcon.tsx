@@ -1,9 +1,14 @@
 import type { ComponentProps, FC } from 'react';
 import React from 'react';
 
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
-export const CollapseIconWrapper = styled.div<{ isExpanded: boolean }>(({ theme, isExpanded }) => ({
+export const CollapseIconWrapper: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  isExpanded: boolean;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div<{ isExpanded: boolean }>(({ theme, isExpanded }) => ({
   width: 8,
   height: 8,
   display: 'flex',

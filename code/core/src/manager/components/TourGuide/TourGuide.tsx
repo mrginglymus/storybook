@@ -35,7 +35,17 @@ type StepDefinition = {
   >
 >;
 
-export const TourGuide = ({
+export const TourGuide: {
+  ({ step, steps, onNext, onComplete, onDismiss, }: {
+    step?: string;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore Circular reference in Step type
+    steps: StepDefinition[];
+    onNext?: ({ next }: { next: () => void; }) => void;
+    onComplete?: () => void;
+    onDismiss?: () => void;
+  }): React.JSX.Element | null; render(props: ComponentProps<typeof TourGuide> | null): void;
+} = ({
   step,
   steps,
   onNext,
@@ -49,7 +59,7 @@ export const TourGuide = ({
   onNext?: ({ next }: { next: () => void }) => void;
   onComplete?: () => void;
   onDismiss?: () => void;
-}) => {
+}): React.JSX.Element | null => {
   const [stepIndex, setStepIndex] = useState<number | null>(step ? null : 0);
   const theme = useTheme();
 
@@ -172,7 +182,7 @@ export const TourGuide = ({
 
 let root: ReturnType<typeof createRoot> | null = null;
 
-TourGuide.render = (props: ComponentProps<typeof TourGuide> | null) => {
+TourGuide.render = (props: ComponentProps<typeof TourGuide> | null): void => {
   let container = document.getElementById('storybook-tour');
   if (!container) {
     container = document.createElement('div');

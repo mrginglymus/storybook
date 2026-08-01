@@ -9,7 +9,7 @@ import { parseArgsParam } from './parseArgsParam.ts';
 
 const { history, document } = global;
 
-export function pathToId(path: string) {
+export function pathToId(path: string): string {
   const match = (path || '').match(/^\/story\/(.+)/);
   if (!match) {
     throw new Error(`Invalid path '${path}',  must start with '/story/'`);
@@ -34,7 +34,7 @@ const getQueryString = ({
   return `?${queryStr}`;
 };
 
-export const setPath = (selection?: Selection) => {
+export const setPath = (selection?: Selection): void => {
   if (!selection) {
     return;
   }
@@ -100,12 +100,12 @@ export class UrlStore implements SelectionStore {
     this.selectionSpecifier = getSelectionSpecifierFromPath();
   }
 
-  setSelection(selection: Selection) {
+  setSelection(selection: Selection): void {
     this.selection = selection;
     setPath(this.selection);
   }
 
-  setQueryParams(queryParams: Record<PropertyKey, unknown>) {
+  setQueryParams(queryParams: Record<PropertyKey, unknown>): void {
     const query = getQueryString({ extraParams: queryParams });
     const { hash = '' } = document.location;
     history.replaceState({}, '', `${document.location.pathname}${query}${hash}`);

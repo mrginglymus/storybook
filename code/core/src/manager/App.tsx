@@ -36,7 +36,7 @@ type Props = {
   hasTab: boolean;
 };
 
-export const App = ({ managerLayoutState, setManagerLayoutState, pages, hasTab }: Props) => {
+export const App = ({ managerLayoutState, setManagerLayoutState, pages, hasTab }: Props): React.JSX.Element => {
   const { setMobileAboutOpen } = useLayout();
 
   /**

@@ -1,7 +1,10 @@
 import React from 'react';
 
 // Copied and modified from https://usehooks.com/usemeasure
-export function useMeasure<T extends Element>() {
+export function useMeasure<T extends Element>(): readonly [(node: T) => void, {
+  width: null;
+  height: null;
+}] {
   const [dimensions, setDimensions] = React.useState({
     width: null,
     height: null,

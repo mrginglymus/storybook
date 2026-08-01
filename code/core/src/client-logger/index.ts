@@ -54,9 +54,9 @@ export const logger = {
 } as const;
 
 const logged = new Set();
-export const once =
+export const once: { (type: keyof typeof logger): (message: any, ...rest: any[]) => void; clear(): void; trace: (message: any, ...rest: any[]) => void; debug: (message: any, ...rest: any[]) => void; info: (message: any, ...rest: any[]) => void; warn: (message: any, ...rest: any[]) => void; error: (message: any, ...rest: any[]) => void; log: (message: any, ...rest: any[]) => void; } =
   (type: keyof typeof logger) =>
-  (message: any, ...rest: any[]) => {
+  (message: any, ...rest: any[]): void => {
     if (logged.has(message)) {
       return undefined;
     }
@@ -64,7 +64,7 @@ export const once =
     return logger[type](message, ...rest);
   };
 
-once.clear = () => logged.clear();
+once.clear = (): void => logged.clear();
 once.trace = once('trace');
 once.debug = once('debug');
 once.info = once('info');
@@ -72,11 +72,11 @@ once.warn = once('warn');
 once.error = once('error');
 once.log = once('log');
 
-export const deprecate = once('warn');
+export const deprecate: (message: any, ...rest: any[]) => void = once('warn');
 
-export const pretty =
+export const pretty: { (type: keyof typeof logger): (...args: Parameters<LoggingFn>) => void; trace: (message: any, ...args: any[]) => void; debug: (message: any, ...args: any[]) => void; info: (message: any, ...args: any[]) => void; warn: (message: any, ...args: any[]) => void; error: (message: any, ...args: any[]) => void; } =
   (type: keyof typeof logger) =>
-  (...args: Parameters<LoggingFn>) => {
+  (...args: Parameters<LoggingFn>): void => {
     const argArray: Parameters<LoggingFn> = [] as any;
 
     if (args.length) {

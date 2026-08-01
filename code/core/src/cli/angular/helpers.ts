@@ -65,11 +65,15 @@ export class AngularJSON {
     this.json = JSON.parse(this.rawText);
   }
 
-  get projects() {
+  get projects(): Record<string, {
+    root: string;
+    projectType: string;
+    architect: Record<string, any>;
+  }> {
     return this.json.projects;
   }
 
-  get projectsWithoutStorybook() {
+  get projectsWithoutStorybook(): string[] {
     return Object.keys(this.projects).filter((projectName) => {
       const { architect } = this.projects[projectName];
 
@@ -77,7 +81,7 @@ export class AngularJSON {
     });
   }
 
-  get hasStorybookBuilder() {
+  get hasStorybookBuilder(): boolean {
     return Object.keys(this.projects).some((projectName) => {
       const { architect } = this.projects[projectName];
       return Object.keys(architect).some((key) => {
@@ -89,7 +93,11 @@ export class AngularJSON {
     });
   }
 
-  get rootProject() {
+  get rootProject(): {
+    root: string;
+    projectType: string;
+    architect: Record<string, any>;
+  } | null {
     const rootProjectName = Object.keys(this.projects).find((projectName) => {
       const { root } = this.projects[projectName];
       return root === '' || root === '.';
@@ -98,11 +106,15 @@ export class AngularJSON {
     return rootProjectName ? this.projects[rootProjectName] : null;
   }
 
-  getProjectSettingsByName(projectName: string) {
+  getProjectSettingsByName(projectName: string): {
+    root: string;
+    projectType: string;
+    architect: Record<string, any>;
+  } {
     return this.projects[projectName];
   }
 
-  async getProjectName() {
+  async getProjectName(): Promise<string> {
     if (this.projectsWithoutStorybook.length > 1) {
       return prompt.select({
         message: 'For which project do you want to generate Storybook configuration?',
@@ -128,7 +140,7 @@ export class AngularJSON {
     useCompodoc: boolean;
     root: string;
     useVite?: boolean;
-  }) {
+  }): void {
     // add an entry to the angular.json file to setup the storybook builders
     const { architect } = this.projects[angularProjectName];
 
@@ -172,7 +184,7 @@ export class AngularJSON {
     }
   }
 
-  write() {
+  write(): void {
     writeFileSync(this.path, this.rawText);
   }
 }

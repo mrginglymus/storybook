@@ -35,70 +35,70 @@ import { Table } from './elements/Table.tsx';
 import { UL } from './elements/UL.tsx';
 
 export const components = {
-  h1: (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => (
+  h1: (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>): React.JSX.Element => (
     <H1 {...nameSpaceClassNames(props, 'h1')} />
   ),
-  h2: (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => (
+  h2: (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>): React.JSX.Element => (
     <H2 {...nameSpaceClassNames(props, 'h2')} />
   ),
-  h3: (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => (
+  h3: (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>): React.JSX.Element => (
     <H3 {...nameSpaceClassNames(props, 'h3')} />
   ),
-  h4: (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => (
+  h4: (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>): React.JSX.Element => (
     <H4 {...nameSpaceClassNames(props, 'h4')} />
   ),
-  h5: (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => (
+  h5: (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>): React.JSX.Element => (
     <H5 {...nameSpaceClassNames(props, 'h5')} />
   ),
-  h6: (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => (
+  h6: (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>): React.JSX.Element => (
     <H6 {...nameSpaceClassNames(props, 'h6')} />
   ),
-  pre: (props: DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement>) => (
+  pre: (props: DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement>): React.JSX.Element => (
     <Pre {...nameSpaceClassNames(props, 'pre')} />
   ),
-  a: (props: DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>) => (
+  a: (props: DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>): React.JSX.Element => (
     <A {...nameSpaceClassNames(props, 'a')} />
   ),
-  hr: (props: DetailedHTMLProps<HTMLAttributes<HTMLHRElement>, HTMLHRElement>) => (
+  hr: (props: DetailedHTMLProps<HTMLAttributes<HTMLHRElement>, HTMLHRElement>): React.JSX.Element => (
     <HR {...nameSpaceClassNames(props, 'hr')} />
   ),
-  dl: (props: DetailedHTMLProps<HTMLAttributes<HTMLDListElement>, HTMLDListElement>) => (
+  dl: (props: DetailedHTMLProps<HTMLAttributes<HTMLDListElement>, HTMLDListElement>): React.JSX.Element => (
     <DL {...nameSpaceClassNames(props, 'dl')} />
   ),
-  blockquote: (props: DetailedHTMLProps<BlockquoteHTMLAttributes<HTMLElement>, HTMLElement>) => (
+  blockquote: (props: DetailedHTMLProps<BlockquoteHTMLAttributes<HTMLElement>, HTMLElement>): React.JSX.Element => (
     <Blockquote {...nameSpaceClassNames(props, 'blockquote')} />
   ),
-  table: (props: DetailedHTMLProps<TableHTMLAttributes<HTMLTableElement>, HTMLTableElement>) => (
+  table: (props: DetailedHTMLProps<TableHTMLAttributes<HTMLTableElement>, HTMLTableElement>): React.JSX.Element => (
     <Table {...nameSpaceClassNames(props, 'table')} />
   ),
-  img: (props: DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => (
+  img: (props: DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>): React.JSX.Element => (
     <Img {...nameSpaceClassNames(props, 'img')} />
   ),
-  div: (props: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => (
+  div: (props: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>): React.JSX.Element => (
     <Div {...nameSpaceClassNames(props, 'div')} />
   ),
-  span: (props: DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>) => (
+  span: (props: DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>): React.JSX.Element => (
     <Span {...nameSpaceClassNames(props, 'span')} />
   ),
-  li: (props: DetailedHTMLProps<LiHTMLAttributes<HTMLLIElement>, HTMLLIElement>) => (
+  li: (props: DetailedHTMLProps<LiHTMLAttributes<HTMLLIElement>, HTMLLIElement>): React.JSX.Element => (
     <LI {...nameSpaceClassNames(props, 'li')} />
   ),
-  ul: (props: DetailedHTMLProps<HTMLAttributes<HTMLUListElement>, HTMLUListElement>) => (
+  ul: (props: DetailedHTMLProps<HTMLAttributes<HTMLUListElement>, HTMLUListElement>): React.JSX.Element => (
     <UL {...nameSpaceClassNames(props, 'ul')} />
   ),
-  ol: (props: DetailedHTMLProps<OlHTMLAttributes<HTMLOListElement>, HTMLOListElement>) => (
+  ol: (props: DetailedHTMLProps<OlHTMLAttributes<HTMLOListElement>, HTMLOListElement>): React.JSX.Element => (
     <OL {...nameSpaceClassNames(props, 'ol')} />
   ),
-  p: (props: DetailedHTMLProps<HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>) => (
+  p: (props: DetailedHTMLProps<HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>): React.JSX.Element => (
     <P {...nameSpaceClassNames(props, 'p')} />
   ),
-  code: (props: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>) => (
+  code: (props: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>): React.JSX.Element => (
     <Code {...nameSpaceClassNames(props, 'code')} />
   ),
-  tt: (props: DetailedHTMLProps<HTMLAttributes<HTMLTitleElement>, HTMLTitleElement>) => (
+  tt: (props: DetailedHTMLProps<HTMLAttributes<HTMLTitleElement>, HTMLTitleElement>): React.JSX.Element => (
     <TT {...nameSpaceClassNames(props, 'tt')} />
   ),
-  resetwrapper: (props: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => (
+  resetwrapper: (props: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>): React.JSX.Element => (
     <ResetWrapper {...nameSpaceClassNames(props, 'resetwrapper')} />
   ),
 };

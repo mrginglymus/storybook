@@ -1,5 +1,5 @@
 // Storybook packages that are not part of the monorepo but we maintain.
-export default [
+const _default_1: string[] = [
   '@storybook/test-runner',
   '@chromatic-com/storybook',
   '@storybook/addon-designs',
@@ -16,3 +16,4 @@ export default [
   '@storybook/addon-ondevice-notes',
   '@storybook/react-native',
 ];
+export default _default_1;

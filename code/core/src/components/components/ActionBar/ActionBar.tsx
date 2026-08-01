@@ -1,7 +1,7 @@
 import type { MouseEvent, ReactElement } from 'react';
 import React from 'react';
 
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 const Container = styled.div<{ $flexLayout?: boolean }>(({ theme, $flexLayout = false }) => [
   {
@@ -23,7 +23,12 @@ const Container = styled.div<{ $flexLayout?: boolean }>(({ theme, $flexLayout = 
       },
 ]);
 
-export const ActionButton = styled.button<{ disabled: boolean }>(
+export const ActionButton: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  disabled: boolean;
+}, React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, {}> = styled.button<{ disabled: boolean }>(
   ({ theme }) => ({
     margin: 0,
     border: '0 none',
@@ -88,7 +93,7 @@ export interface ActionBarProps {
   flexLayout?: boolean;
 }
 
-export const ActionBar = ({ actionItems, flexLayout = false, ...props }: ActionBarProps) => {
+export const ActionBar = ({ actionItems, flexLayout = false, ...props }: ActionBarProps): React.JSX.Element => {
   return (
     <Container {...props} $flexLayout={flexLayout}>
       {actionItems.map(({ title, ariaLabel, className, onClick, disabled }, index: number) => (

@@ -54,7 +54,7 @@ export class JsPackageManagerFactory {
    * @returns Package manager type as string: 'npm', 'pnpm', 'bun', 'yarn1', or 'yarn2'
    * @throws Error if no usable package manager is found
    */
-  public static getPackageManagerType(cwd = process.cwd()): PackageManagerName {
+  public static getPackageManagerType(cwd: string = process.cwd()): PackageManagerName {
     const root = getProjectRoot();
 
     const lockFiles = [
@@ -136,7 +136,7 @@ export class JsPackageManagerFactory {
       storiesPaths?: string[];
       ignoreCache?: boolean;
     } = {},
-    cwd = process.cwd()
+    cwd: string = process.cwd()
   ): JsPackageManager {
     // Check cache first, unless ignored
     const cacheKey = this.getCacheKey(force, configDir, cwd, storiesPaths);

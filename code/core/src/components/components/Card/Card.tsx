@@ -1,6 +1,6 @@
 import React, { forwardRef, type ComponentProps, type DOMAttributes } from 'react';
 
-import type { StorybookTheme } from 'storybook/theming';
+import type { StorybookTheme, Theme, StyledComponent } from 'storybook/theming';
 import { keyframes, styled } from 'storybook/theming';
 
 type ThemeColor = keyof StorybookTheme['color'] | keyof StorybookTheme['fgColor'];
@@ -58,7 +58,12 @@ const slide = keyframes({
   },
 });
 
-const CardContent = styled.div<{ color?: ThemeColor }>(({ color, theme }) => ({
+const CardContent: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  color?: ThemeColor;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div<{ color?: ThemeColor }>(({ color, theme }) => ({
   color: getColor(theme, color),
   borderRadius: theme.appBorderRadius,
   background: getOpaqueBackground(theme, color),
@@ -138,7 +143,22 @@ interface CardProps extends ComponentProps<typeof CardContent> {
   outlineAttrs?: DOMAttributes<HTMLDivElement>;
 }
 
-export const Card = Object.assign(
+export const Card: React.ForwardRefExoticComponent<Omit<CardProps, "ref"> & React.RefAttributes<HTMLDivElement>> & {
+  Content: StyledComponent<{
+    theme?: Theme;
+    as?: React.ElementType;
+  } & {
+    color?: ThemeColor;
+  }, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}>;
+  Outline: StyledComponent<{
+    theme?: Theme;
+    as?: React.ElementType;
+  } & {
+    animation?: "none" | "rainbow" | "spin";
+    color?: ThemeColor;
+    outlineColor?: ThemeColor;
+  }, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}>;
+} = Object.assign(
   forwardRef<HTMLDivElement, CardProps>(function Card(
     { outlineAnimation = 'none', color, outlineColor, outlineAttrs: outlineAttrs = {}, ...props },
     ref

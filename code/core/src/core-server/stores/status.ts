@@ -1,5 +1,5 @@
 import { optionalEnvToBoolean } from '../../common/utils/envs.ts';
-import { createStatusStore } from '../../shared/status-store/index.ts';
+import { createStatusStore, StatusTypeId, StatusStoreEvent, StatusStoreByTypeId, StatusStore, StatusesByStoryIdAndTypeId, Status } from '../../shared/status-store/index.ts';
 import { UNIVERSAL_STATUS_STORE_OPTIONS } from '../../shared/status-store/index.ts';
 import { UniversalStore } from '../../shared/universal-store/index.ts';
 
@@ -18,4 +18,9 @@ const statusStore = createStatusStore({
   environment: 'server',
 });
 
-export const { fullStatusStore, getStatusStoreByTypeId, universalStatusStore } = statusStore;
+export const fullStatusStore: StatusStore & {
+  selectStatuses: (statuses: Status[]) => void;
+  typeId: undefined;
+} = statusStore.fullStatusStore;
+export const getStatusStoreByTypeId: (typeId: StatusTypeId) => StatusStoreByTypeId = statusStore.getStatusStoreByTypeId;
+export const universalStatusStore: UniversalStore<StatusesByStoryIdAndTypeId, StatusStoreEvent> = statusStore.universalStatusStore;

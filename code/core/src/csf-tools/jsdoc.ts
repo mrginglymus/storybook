@@ -23,7 +23,10 @@ function groupByTag(specs: Spec[]): Map<string, Spec[]> {
  * Shared by the server-side docgen providers so component descriptions and `@summary` / `@import`
  * style tags read the same across renderers.
  */
-export function extractJSDocInfo(jsdocComment: string) {
+export function extractJSDocInfo(jsdocComment: string): {
+  description: string;
+  tags: JsDocTagMap;
+} {
   const lines = jsdocComment.split('\n');
   const jsDoc = ['/**', ...lines.map((line) => ` * ${line}`), ' */'].join('\n');
 
@@ -58,7 +61,11 @@ export function extractComponentDescription(
   metaJsDoc: string | undefined,
   docgenDescription: string | undefined,
   docgenJsDocTags?: JsDocTagMap
-) {
+): {
+  description: string;
+  summary: string;
+  jsDocTags: JsDocTagMap;
+} {
   const jsdocComment = metaJsDoc || docgenDescription;
   const extracted = jsdocComment ? extractJSDocInfo(jsdocComment) : undefined;
   const tags = docgenJsDocTags ?? extracted?.tags ?? {};

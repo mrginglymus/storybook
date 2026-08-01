@@ -28,7 +28,10 @@ const REQUEST_TIMEOUT_MS = 10 * 60 * 1000;
  * telemetry can segment CLI-originated calls from agents connected over MCP directly
  * (storybookjs/storybook#35131).
  */
-export const MCP_CLIENT_INFO = { name: 'storybook-cli', version: versions.storybook };
+export const MCP_CLIENT_INFO: {
+  name: string;
+  version: string;
+} = { name: 'storybook-cli', version: versions.storybook };
 
 /** Protocol version sent on `initialize`; tmcp (the addon-mcp server library) supports it. */
 const MCP_PROTOCOL_VERSION = '2025-06-18';

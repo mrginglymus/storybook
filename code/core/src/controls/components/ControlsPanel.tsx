@@ -291,7 +291,7 @@ function ServiceControlsPanel({
   );
 }
 
-export const ControlsPanel = ({ docgenService, ...props }: ControlsPanelProps) => {
+export const ControlsPanel = ({ docgenService, ...props }: ControlsPanelProps): React.JSX.Element => {
   if (docgenService) {
     return <ServiceControlsPanel {...props} docgenService={docgenService} />;
   }

@@ -1,5 +1,5 @@
 export const BREAKPOINT = 600;
-export const MEDIA_DESKTOP_BREAKPOINT = `@media (min-width: ${BREAKPOINT}px)`;
+export const MEDIA_DESKTOP_BREAKPOINT: "@media (min-width: 600px)" = `@media (min-width: ${BREAKPOINT}px)`;
 export const MOBILE_TRANSITION_DURATION = 300;
 
 /** Minimum width in pixels for the main content area in the layout grid. */

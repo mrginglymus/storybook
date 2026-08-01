@@ -25,7 +25,7 @@ const ZoomResetButton = styled(ActionList.Button)<{ $isInitialValue: boolean }>(
   })
 );
 
-const Context = createContext({ value: INITIAL_ZOOM_LEVEL, set: (v: number) => {} });
+const Context = createContext({ value: INITIAL_ZOOM_LEVEL, set: (v: number): void => {} });
 
 const ZoomInput = styled(NumericInput)({
   input: {
@@ -33,19 +33,24 @@ const ZoomInput = styled(NumericInput)({
   },
 });
 
-export const ZoomConsumer = Context.Consumer;
+export const ZoomConsumer: React.Consumer<{
+  value: number;
+  set: (v: number) => void;
+}> = Context.Consumer;
 
 export class ZoomProvider extends Component<
   PropsWithChildren<{ shouldScale: boolean }>,
   { value: number }
 > {
-  state = {
+  state: {
+    value: number;
+  } = {
     value: INITIAL_ZOOM_LEVEL,
   };
 
-  set = (value: number) => this.setState({ value });
+  set = (value: number): void => this.setState({ value });
 
-  render() {
+  render(): React.JSX.Element {
     const { children, shouldScale } = this.props;
     const { set } = this;
     const { value } = this.state;
@@ -57,7 +62,13 @@ export class ZoomProvider extends Component<
   }
 }
 
-export const Zoom = memo<{
+export const Zoom: React.NamedExoticComponent<{
+  value: number;
+  zoomIn: () => void;
+  zoomOut: () => void;
+  zoomTo: (value: number) => void;
+  zoomBy: (delta: number) => void;
+}> = memo<{
   value: number;
   zoomIn: () => void;
   zoomOut: () => void;

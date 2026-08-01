@@ -22,8 +22,8 @@ import { useLandmark } from '../../hooks/useLandmark.ts';
 import { useLayout } from '../layout/LayoutProvider.tsx';
 import type { PreviewProps } from './utils/types.tsx';
 
-export const getTools = (getFn: API['getElements']) => Object.values(getFn(types.TOOL));
-export const getToolsExtra = (getFn: API['getElements']) => Object.values(getFn(types.TOOLEXTRA));
+export const getTools = (getFn: API['getElements']): Addon_BaseType[] => Object.values(getFn(types.TOOL));
+export const getToolsExtra = (getFn: API['getElements']): Addon_BaseType[] => Object.values(getFn(types.TOOLEXTRA));
 
 const fullScreenMapper = ({ api, state }: Combo) => {
   return {
@@ -79,7 +79,7 @@ export interface ToolData {
   toolsExtra: Addon_BaseType[];
 }
 
-export const ToolbarComp = React.memo<ToolData>(function ToolbarComp({
+export const ToolbarComp: React.NamedExoticComponent<ToolData> = React.memo<ToolData>(function ToolbarComp({
   isShown,
   tools,
   toolsExtra,
@@ -117,7 +117,9 @@ export const ToolbarComp = React.memo<ToolData>(function ToolbarComp({
   ) : null;
 });
 
-export const Tools = React.memo<{ list: Addon_BaseType[] }>(function Tools({ list }) {
+export const Tools: React.NamedExoticComponent<{
+  list: Addon_BaseType[];
+}> = React.memo<{ list: Addon_BaseType[] }>(function Tools({ list }) {
   return (
     <ToolGroup>
       {list.filter(Boolean).map(({ render: Render, id, ...t }, index) => (
@@ -150,7 +152,7 @@ export function filterToolsSide(
   location: State['location'],
   path: State['path'],
   tabId: string
-) {
+): Addon_BaseType[] {
   const filter = (item: Partial<Addon_BaseType>) =>
     item &&
     (!item.match ||

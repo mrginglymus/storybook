@@ -6,7 +6,7 @@ import { deprecate } from 'storybook/internal/client-logger';
 import { Slot } from '@radix-ui/react-slot';
 import { darken, lighten, rgba, transparentize } from 'polished';
 import { shortcutToAriaKeyshortcuts, type API_KeyCollection } from 'storybook/manager-api';
-import { isPropValid, styled } from 'storybook/theming';
+import { isPropValid, styled, Theme, StyledComponent } from 'storybook/theming';
 
 import { InteractiveTooltipWrapper } from './helpers/InteractiveTooltipWrapper.tsx';
 import { useAriaDescription } from './helpers/useAriaDescription.tsx';
@@ -50,7 +50,7 @@ export interface ButtonProps extends Omit<ComponentProps<typeof StyledButton>, '
   shortcut?: API_KeyCollection;
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button: React.ForwardRefExoticComponent<Omit<ButtonProps, "ref"> & React.RefAttributes<HTMLButtonElement>> = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       as = 'button',
@@ -161,7 +161,20 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
 Button.displayName = 'Button';
 
-const StyledButton = styled('button', {
+const StyledButton: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  size?: "small" | "medium";
+  padding?: "small" | "medium" | "none";
+  appearance?: "default" | "agentic";
+  variant?: "outline" | "solid" | "ghost";
+  active?: boolean;
+  $disabled?: boolean;
+  readOnly?: boolean;
+  animating?: boolean;
+  animation?: "none" | "rotate360" | "glow" | "jiggle";
+}, React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, {}> = styled('button', {
   shouldForwardProp: (prop) => isPropValid(prop),
 })<{
   size?: 'small' | 'medium';
@@ -346,7 +359,7 @@ const StyledButton = styled('button', {
   };
 });
 
-export const IconButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+export const IconButton: React.ForwardRefExoticComponent<Omit<ButtonProps, "ref"> & React.RefAttributes<HTMLButtonElement>> = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   deprecate(
     '`IconButton` is deprecated and will be removed in Storybook 11, use `Button` instead.'
   );

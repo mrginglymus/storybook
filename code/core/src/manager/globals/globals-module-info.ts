@@ -32,7 +32,7 @@ const duplicatedKeys = [
   'storybook/viewport',
 ];
 
-export const globalsModuleInfoMap = globalPackages.reduce(
+export const globalsModuleInfoMap: Required<Record<"storybook/theming" | "storybook/theming/create" | "storybook/manager-api" | "storybook/test" | "react" | "react-dom" | "react-dom/client" | "@storybook/icons" | "storybook/internal/channels" | "storybook/internal/client-logger" | "storybook/internal/components" | "storybook/internal/core-events" | "storybook/internal/manager-errors" | "storybook/internal/router" | "storybook/internal/types", Required<ModuleInfo>>> = globalPackages.reduce(
   (acc, key) => {
     acc[key] = {
       type: 'esm',

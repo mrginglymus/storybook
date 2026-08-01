@@ -10,7 +10,7 @@ import measureManager from '../../measure/manager.tsx';
 import outlineManager from '../../outline/manager.tsx';
 import viewportManager from '../../viewport/manager.tsx';
 
-export default [
+const _default_1: void[] = [
   docgenManager,
   measureManager,
   actionsManager,
@@ -20,3 +20,4 @@ export default [
   viewportManager,
   outlineManager,
 ];
+export default _default_1;

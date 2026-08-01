@@ -9,7 +9,7 @@ import { PanelTitle } from './components/PanelTitle.tsx';
 import { ADDON_ID, PANEL_ID } from './constants.ts';
 import { isInteractionsDisabled } from './utils.ts';
 
-export default addons.register(ADDON_ID, () => {
+const registration: void = addons.register(ADDON_ID, () => {
   if (globalThis?.FEATURES?.interactions) {
     const filter = ({ state }: Combo) => {
       const origin = (state.refId && state.refs[state.refId]?.url) || document.location.origin;
@@ -37,3 +37,5 @@ export default addons.register(ADDON_ID, () => {
     });
   }
 });
+
+export default registration;

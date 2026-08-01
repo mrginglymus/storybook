@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import React, { useRef, useState } from 'react';
 
-import { keyframes, styled } from 'storybook/theming';
+import { keyframes, styled, Theme, StyledComponent } from 'storybook/theming';
 
 const slideIn = keyframes({
   from: {
@@ -17,7 +17,10 @@ const slideOut = keyframes({
   },
 });
 
-const Container = styled.div({
+const Container: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div({
   display: 'inline-grid',
   gridTemplateColumns: '1fr',
   justifyContent: 'center',
@@ -69,7 +72,7 @@ export const TextFlip = ({
   text: string;
   duration?: number;
   placeholder?: string;
-} & ComponentProps<typeof Container>) => {
+} & ComponentProps<typeof Container>): React.JSX.Element => {
   const textRef = useRef(text);
   const [staleValue, setStaleValue] = useState(text);
 

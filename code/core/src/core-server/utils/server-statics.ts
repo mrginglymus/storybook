@@ -37,7 +37,7 @@ const faviconWrapperPath = join(
   '/assets/browser/favicon-wrapper.svg'
 );
 
-export const prepareNestedSvg = (svg: string) => {
+export const prepareNestedSvg = (svg: string): string => {
   const [, openingTag, contents, closingTag] = svg?.match(/(<svg[^>]*>)(.*?)(<\/svg>)/s) ?? [];
   if (!openingTag || !contents || !closingTag) {
     return svg;
@@ -167,7 +167,12 @@ const sirvWorkaround: typeof sirv =
     sirv(dir, { dev: true, etag: true, extensions: [], ...opts })(req, res, maybeNext);
   };
 
-export const parseStaticDir = (arg: string) => {
+export const parseStaticDir = (arg: string): {
+  staticDir: string;
+  staticPath: string;
+  targetDir: string;
+  targetEndpoint: string;
+} => {
   // Split on last index of ':', for Windows compatibility (e.g. 'C:\some\dir:\foo')
   const lastColonIndex = arg.lastIndexOf(':');
   const isWindowsAbsolute = win32.isAbsolute(arg);
@@ -198,7 +203,12 @@ export const parseStaticDir = (arg: string) => {
 export const mapStaticDir = (
   staticDir: NonNullable<StorybookConfigRaw['staticDirs']>[number],
   configDir: string
-) => {
+): {
+    staticDir: string;
+    staticPath: string;
+    targetDir: string;
+    targetEndpoint: string;
+  } => {
   const specifier = typeof staticDir === 'string' ? staticDir : `${staticDir.from}:${staticDir.to}`;
   const normalizedDir = isAbsolute(specifier)
     ? specifier

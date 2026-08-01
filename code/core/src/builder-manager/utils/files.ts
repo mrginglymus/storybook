@@ -11,7 +11,10 @@ import type { Compilation } from '../types.ts';
 export async function readOrderedFiles(
   addonsDir: string,
   outputFiles: Compilation['outputFiles'] | undefined
-) {
+): Promise<{
+  cssFiles: string[];
+  jsFiles: string[];
+}> {
   const files = await Promise.all(
     outputFiles?.map(async (file) => {
       // convert deeply nested paths to a single level, also remove special characters
@@ -31,7 +34,10 @@ export async function readOrderedFiles(
   return { cssFiles, jsFiles };
 }
 
-export function sanitizePath(file: OutputFile, addonsDir: string) {
+export function sanitizePath(file: OutputFile, addonsDir: string): {
+  location: string;
+  url: string;
+} {
   const filePath = relative(addonsDir, file.path);
   const location = normalize(join(addonsDir, filePath));
   const url = `./sb-addons/${slash(filePath).split('/').map(encodeURIComponent).join('/')}`;

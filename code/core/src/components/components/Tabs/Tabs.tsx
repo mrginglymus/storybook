@@ -58,7 +58,7 @@ const StyledTabBar = styled.div({
   flexGrow: 1,
 });
 
-export const TabBar = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+export const TabBar: React.ForwardRefExoticComponent<React.HTMLAttributes<HTMLDivElement> & React.RefAttributes<HTMLDivElement>> = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   (props, ref) => {
     deprecate('The `TabBar` component is deprecated. Use `TabsView` instead.');
     return <StyledTabBar data-deprecated="TabBar" {...props} ref={ref} />;
@@ -117,7 +117,7 @@ export interface TabWrapperProps {
   children?: ReactNode;
 }
 
-export const TabWrapper = forwardRef<HTMLDivElement, TabWrapperProps>(
+export const TabWrapper: React.ForwardRefExoticComponent<TabWrapperProps & React.RefAttributes<HTMLDivElement>> = forwardRef<HTMLDivElement, TabWrapperProps>(
   ({ active, render, children }, ref) => {
     deprecate('The `TabWrapper` component is deprecated. Use `TabsView` instead.');
     return (
@@ -307,10 +307,10 @@ export class TabsState extends Component<TabsStateProps, TabsStateState> {
   }
 
   handlers = {
-    onSelect: (id: string) => this.setState({ selected: id }),
+    onSelect: (id: string): void => this.setState({ selected: id }),
   };
 
-  render() {
+  render(): React.JSX.Element {
     const { bordered = false, absolute = false, children, backgroundColor, menuName } = this.props;
     const { selected } = this.state;
     return (

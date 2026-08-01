@@ -127,7 +127,7 @@ const FilterInner = ({
   );
 };
 
-export const Filter = () => (
+export const Filter = (): React.JSX.Element => (
   <Consumer filter={filterMapper}>
     {({
       api,

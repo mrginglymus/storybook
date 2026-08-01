@@ -5,10 +5,10 @@ import { deprecate } from 'storybook/internal/client-logger';
 
 import { CrossIcon } from '@storybook/icons';
 
-import { Heading } from 'react-aria-components/patched-dist/Heading';
+import { Heading, TextProps, HeadingProps } from 'react-aria-components/patched-dist/Heading';
 import { Text } from 'react-aria-components/patched-dist/Text';
 import type { TransitionStatus } from 'react-transition-state';
-import { keyframes, styled } from 'storybook/theming';
+import { keyframes, styled, Theme, StyledComponent } from 'storybook/theming';
 
 import { Button } from '../Button/Button.tsx';
 // Import the ModalContext from the main Modal component
@@ -73,7 +73,13 @@ const slideToBottom = keyframes({
   },
 });
 
-export const Overlay = styled.div<{
+export const Overlay: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  $status?: TransitionStatus;
+  $transitionDuration?: number;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div<{
   $status?: TransitionStatus;
   $transitionDuration?: number;
 }>(({ $status, $transitionDuration }) => ({
@@ -93,7 +99,16 @@ export const Overlay = styled.div<{
   },
 }));
 
-export const Container = styled.div<{
+export const Container: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  $variant: "dialog" | "bottom-drawer";
+  $status?: TransitionStatus;
+  $transitionDuration?: number;
+  width?: number | string;
+  height?: number | string;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div<{
   $variant: 'dialog' | 'bottom-drawer';
   $status?: TransitionStatus;
   $transitionDuration?: number;
@@ -172,7 +187,7 @@ interface CloseProps {
   onClick?: (event: React.MouseEvent) => void;
 }
 
-export const Close = ({ asChild, children, onClick, ...props }: CloseProps) => {
+export const Close = ({ asChild, children, onClick, ...props }: CloseProps): React.JSX.Element => {
   const { close } = useContext(ModalContext);
 
   if (asChild && React.isValidElement(children)) {
@@ -203,13 +218,13 @@ export const Close = ({ asChild, children, onClick, ...props }: CloseProps) => {
 };
 
 export const Dialog = {
-  Close: () => {
+  Close: (): React.JSX.Element => {
     deprecate('Modal.Dialog.Close is deprecated, please use Modal.Close instead.');
     return <Close data-deprecated="Modal.Dialog.Close" />;
   },
 };
 
-export const CloseButton = ({ ariaLabel, ...props }: React.ComponentProps<typeof Button>) => {
+export const CloseButton = ({ ariaLabel, ...props }: React.ComponentProps<typeof Button>): React.JSX.Element => {
   deprecate('Modal.CloseButton is deprecated, please use Modal.Close instead.');
 
   return (
@@ -221,20 +236,29 @@ export const CloseButton = ({ ariaLabel, ...props }: React.ComponentProps<typeof
   );
 };
 
-export const Content = styled.div({
+export const Content: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div({
   display: 'flex',
   flexDirection: 'column',
   margin: 16,
   gap: 16,
 });
 
-export const Row = styled.div({
+export const Row: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div({
   display: 'flex',
   justifyContent: 'space-between',
   gap: 16,
 });
 
-export const Col = styled.div({
+export const Col: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: 4,
@@ -244,14 +268,16 @@ export const Header = ({
   hasClose = true,
   onClose,
   ...props
-}: React.ComponentProps<typeof Col> & { hasClose?: boolean; onClose?: () => void }) => (
+}: React.ComponentProps<typeof Col> & { hasClose?: boolean; onClose?: () => void }): React.JSX.Element => (
   <Row>
     <Col {...props} />
     {hasClose && <Close onClick={onClose} />}
   </Row>
 );
 
-export const Title = styled((props: ComponentProps<typeof Heading>) => (
+export const Title: StyledComponent<HeadingProps & React.RefAttributes<HTMLHeadingElement> & {
+  theme?: Theme;
+}, {}, {}> = styled((props: ComponentProps<typeof Heading>) => (
   <Heading level={2} {...props} />
 ))(({ theme }) => ({
   margin: 0,
@@ -259,20 +285,28 @@ export const Title = styled((props: ComponentProps<typeof Heading>) => (
   fontWeight: theme.typography.weight.bold,
 }));
 
-export const Description = styled(Text)(({ theme }) => ({
+export const Description: StyledComponent<TextProps & React.RefAttributes<HTMLElement> & {
+  theme?: Theme;
+}, {}, {}> = styled(Text)(({ theme }) => ({
   position: 'relative',
   zIndex: 1,
   margin: 0,
   fontSize: theme.typography.size.s2,
 }));
 
-export const Actions = styled.div({
+export const Actions: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div({
   display: 'flex',
   flexDirection: 'row-reverse',
   gap: 8,
 });
 
-export const ErrorWrapper = styled.div(({ theme }) => ({
+export const ErrorWrapper: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div(({ theme }) => ({
   maxHeight: 100,
   overflow: 'auto',
   '@media (prefers-reduced-motion: no-preference)': {
@@ -291,7 +325,7 @@ export const ErrorWrapper = styled.div(({ theme }) => ({
 export const Error = ({
   children,
   ...props
-}: { children: React.ReactNode } & ComponentProps<typeof ErrorWrapper>) => (
+}: { children: React.ReactNode } & ComponentProps<typeof ErrorWrapper>): React.JSX.Element => (
   <ErrorWrapper {...props}>
     <div>{children}</div>
   </ErrorWrapper>

@@ -1,6 +1,6 @@
 import React, { type ComponentProps } from 'react';
 
-import { keyframes, styled } from 'storybook/theming';
+import { keyframes, styled, Theme, StyledComponent } from 'storybook/theming';
 
 const XMLNS = 'http://www.w3.org/2000/svg';
 
@@ -13,7 +13,12 @@ const rotate = keyframes({
   },
 });
 
-const Wrapper = styled.div<{ size: number }>(({ size }) => ({
+const Wrapper: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+} & {
+  size: number;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}> = styled.div<{ size: number }>(({ size }) => ({
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -70,7 +75,7 @@ export const ProgressSpinner = ({
   width = 1.5,
   children = null,
   ...props
-}: ProgressSpinnerProps) =>
+}: ProgressSpinnerProps): React.JSX.Element =>
   typeof percentage === 'number' ? (
     <Wrapper size={size} {...props}>
       {children}

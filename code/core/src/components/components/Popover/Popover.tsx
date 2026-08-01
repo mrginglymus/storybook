@@ -74,7 +74,7 @@ const AbsoluteButton = styled(Button)({
   right: 4,
 });
 
-export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
+export const Popover: React.ForwardRefExoticComponent<PopoverProps & React.RefAttributes<HTMLDivElement>> = forwardRef<HTMLDivElement, PopoverProps>(
   (
     {
       children,

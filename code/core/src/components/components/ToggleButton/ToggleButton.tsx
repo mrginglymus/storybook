@@ -13,7 +13,7 @@ export interface ToggleButtonProps extends ButtonProps {
 // In case of reports on screenreader announcements, please check
 // https://adrianroselli.com/2021/10/switch-role-support.html.
 
-export const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
+export const ToggleButton: React.ForwardRefExoticComponent<Omit<ToggleButtonProps, "ref"> & React.RefAttributes<HTMLButtonElement>> = forwardRef<HTMLButtonElement, ToggleButtonProps>(
   ({ pressed, ...props }, ref) => {
     return (
       <StyledToggle role="switch" aria-checked={pressed} ref={ref} pressed={pressed} {...props} />

@@ -24,7 +24,7 @@ export type FilterItem = {
 };
 
 /** Tags that are hidden in the filter UI. There's a more general built-in list defined in `shared/constants/tags`. */
-export const BUILT_IN_TAGS = new Set([
+export const BUILT_IN_TAGS: Set<string> = new Set([
   'dev',
   'test',
   'autodocs',
@@ -47,7 +47,7 @@ export const STATUS_DISPLAY_ORDER: StatusValue[] = [
  * Equality check for filter arrays. Works on the basis that there are no duplicates.
  * We use arrays because we need arrays for data persistence in the layout module.
  */
-export const areFiltersEqual = (left: string[], right: string[]) =>
+export const areFiltersEqual = (left: string[], right: string[]): boolean =>
   left.length === right.length && new Set([...left, ...right]).size === left.length;
 
 export const getFilterFunction = (tag: Tag): FilterFunction | null => {

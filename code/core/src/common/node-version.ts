@@ -32,7 +32,7 @@ export function formatMinVersion(v: MinNodeVersion): string {
 }
 
 /** Human-readable description like "20.19+ or 22.12+" */
-export const MIN_SUPPORTED_NODE_DESCRIPTION =
+export const MIN_SUPPORTED_NODE_DESCRIPTION: string =
   MIN_SUPPORTED_NODE_VERSIONS.map(formatMinVersion).join(' or ');
 
 /**

@@ -163,7 +163,7 @@ export class ConfigFile {
     this.fileName = fileName;
   }
 
-  _parseExportsObject(exportsObject: t.ObjectExpression) {
+  _parseExportsObject(exportsObject: t.ObjectExpression): void {
     this._exportsObject = exportsObject;
     (exportsObject.properties as t.ObjectProperty[]).forEach((p) => {
       const exportName = propKey(p);
@@ -186,7 +186,7 @@ export class ConfigFile {
    * Resolve a declaration node by unwrapping TS assertions/satisfies and following identifiers to
    * resolve the correct node in case it's an identifier.
    */
-  _resolveDeclaration = (node: t.Node, parent: t.Node = this._ast.program) => {
+  _resolveDeclaration = (node: t.Node, parent: t.Node = this._ast.program): any => {
     const decl = this._unwrap(node);
     if (t.isIdentifier(decl) && t.isProgram(parent)) {
       const initialization = _findVarInitialization(decl.name, parent);
@@ -195,7 +195,7 @@ export class ConfigFile {
     return decl;
   };
 
-  parse() {
+  parse(): this {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     traverse(this._ast, {
@@ -333,7 +333,7 @@ export class ConfigFile {
     return self;
   }
 
-  getFieldNode(path: string[]) {
+  getFieldNode(path: string[]): t.Node | undefined {
     const [root, ...rest] = path;
     const exported = this._exports[root];
 
@@ -364,7 +364,7 @@ export class ConfigFile {
     return undefined;
   }
 
-  getSafeFieldValue(path: string[]) {
+  getSafeFieldValue(path: string[]): any {
     try {
       return this.getFieldValue(path);
     } catch (e) {
@@ -373,7 +373,7 @@ export class ConfigFile {
     return undefined;
   }
 
-  setFieldNode(path: string[], expr: t.Expression) {
+  setFieldNode(path: string[], expr: t.Expression): void {
     const [first, ...rest] = path;
     const exportNode = this._exports[first];
 
@@ -482,7 +482,7 @@ export class ConfigFile {
     return pathNames;
   }
 
-  _getPnpWrappedValue(node: t.Node) {
+  _getPnpWrappedValue(node: t.Node): string | undefined {
     if (t.isCallExpression(node)) {
       const arg = node.arguments[0];
       if (t.isStringLiteral(arg)) {
@@ -498,7 +498,7 @@ export class ConfigFile {
    * 1. `{ node: 'value' }`
    * 2. `{ node: { fallbackProperty: 'value' } }`
    */
-  _getPresetValue(node: t.Node, fallbackProperty: string) {
+  _getPresetValue(node: t.Node, fallbackProperty: string): string {
     let value;
     if (t.isStringLiteral(node)) {
       value = node.value;
@@ -540,7 +540,7 @@ export class ConfigFile {
     return value;
   }
 
-  removeField(path: string[]) {
+  removeField(path: string[]): void {
     const removeProperty = (properties: t.ObjectProperty[], prop: string) => {
       const index = properties.findIndex(
         (p) =>
@@ -603,7 +603,7 @@ export class ConfigFile {
     }
   }
 
-  appendValueToArray(path: string[], value: any) {
+  appendValueToArray(path: string[], value: any): void {
     const node = this.valueToNode(value);
 
     if (node) {
@@ -611,7 +611,7 @@ export class ConfigFile {
     }
   }
 
-  appendNodeToArray(path: string[], node: t.Expression) {
+  appendNodeToArray(path: string[], node: t.Expression): void {
     const current = this.getFieldNode(path);
     if (!current) {
       this.setFieldNode(path, t.arrayExpression([node]));
@@ -626,7 +626,7 @@ export class ConfigFile {
    * Specialized helper to remove addons or other array entries that can either be strings or
    * objects with a name property.
    */
-  removeEntryFromArray(path: string[], value: string) {
+  removeEntryFromArray(path: string[], value: string): void {
     const current = this.getFieldNode(path);
 
     if (!current) {
@@ -653,7 +653,7 @@ export class ConfigFile {
     }
   }
 
-  _inferQuotes() {
+  _inferQuotes(): "single" | "double" {
     if (!this._quotes) {
       // first 500 tokens for efficiency
       const occurrences = (this._ast.tokens || []).slice(0, 500).reduce(
@@ -699,7 +699,7 @@ export class ConfigFile {
     return valueNode;
   }
 
-  setFieldValue(path: string[], value: any) {
+  setFieldValue(path: string[], value: any): void {
     const valueNode = this.valueToNode(value);
     if (!valueNode) {
       throw new Error(`Unexpected value ${JSON.stringify(value)}`);
@@ -711,7 +711,7 @@ export class ConfigFile {
     return this._ast.program.body;
   }
 
-  setBodyDeclaration(declaration: t.Declaration) {
+  setBodyDeclaration(declaration: t.Declaration): void {
     this._ast.program.body.push(declaration);
   }
 
@@ -732,7 +732,7 @@ export class ConfigFile {
    *   import will be set. Otherwise, an array of named imports will be set
    * @param fromImport - The module to import from
    */
-  setRequireImport(importSpecifier: string[] | string, fromImport: string) {
+  setRequireImport(importSpecifier: string[] | string, fromImport: string): void {
     const requireDeclaration = this._ast.program.body.find((node) => {
       const hasDeclaration =
         t.isVariableDeclaration(node) &&
@@ -861,7 +861,7 @@ export class ConfigFile {
    *   import will be set. Otherwise, an array of named imports will be set
    * @param fromImport - The module to import from
    */
-  setImport(importSpecifier: string[] | string | { namespace: string } | null, fromImport: string) {
+  setImport(importSpecifier: string[] | string | { namespace: string } | null, fromImport: string): void {
     const importDeclaration = this._ast.program.body.find((node) => {
       const hasDeclaration =
         t.isImportDeclaration(node) &&
@@ -980,7 +980,7 @@ export class ConfigFile {
   _removeRequireImport(
     importSpecifier: string[] | string | { namespace: string } | null,
     fromImport: string
-  ) {
+  ): void {
     // Find require declaration first.
     const requireDeclarationIndex = this._ast.program.body.findIndex((node) => {
       const hasDeclaration =
@@ -1051,7 +1051,7 @@ export class ConfigFile {
   _removeImport(
     importSpecifier: string[] | string | { namespace: string } | null,
     fromImport: string
-  ) {
+  ): void {
     // Find import declaration first.
     const importDeclarationIndex = this._ast.program.body.findIndex(
       (node) =>
@@ -1151,13 +1151,13 @@ export class ConfigFile {
   removeImport(
     importSpecifier: string[] | string | { namespace: string } | null,
     fromImport: string
-  ) {
+  ): void {
     this._removeRequireImport(importSpecifier, fromImport);
     this._removeImport(importSpecifier, fromImport);
   }
 }
 
-export const loadConfig = (code: string, fileName?: string) => {
+export const loadConfig = (code: string, fileName?: string): ConfigFile => {
   const ast = babelParse(code);
   return new ConfigFile(ast, code, fileName);
 };
@@ -1170,12 +1170,12 @@ export const printConfig = (config: ConfigFile, options: RecastOptions = {}): Pr
   return recast.print(config._ast, options);
 };
 
-export const readConfig = async (fileName: string) => {
+export const readConfig = async (fileName: string): Promise<ConfigFile> => {
   const code = (await readFile(fileName, 'utf-8')).toString();
   return loadConfig(code, fileName).parse();
 };
 
-export const writeConfig = async (config: ConfigFile, fileName?: string) => {
+export const writeConfig = async (config: ConfigFile, fileName?: string): Promise<void> => {
   const fname = fileName || config.fileName;
 
   if (!fname) {
@@ -1184,7 +1184,7 @@ export const writeConfig = async (config: ConfigFile, fileName?: string) => {
   await writeFile(fname, formatConfig(config));
 };
 
-export const isCsfFactoryPreview = (previewConfig: ConfigFile) => {
+export const isCsfFactoryPreview = (previewConfig: ConfigFile): boolean => {
   const program = previewConfig._ast.program;
   return !!program.body.find((node) => {
     return (

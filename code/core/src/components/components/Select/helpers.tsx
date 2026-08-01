@@ -1,9 +1,9 @@
 import type React from 'react';
 
-import { styled } from 'storybook/theming';
+import { styled, Theme, StyledComponent } from 'storybook/theming';
 
 export const PAGE_STEP_SIZE = 5;
-export const UNDEFINED_VALUE = Symbol.for('undefined');
+export const UNDEFINED_VALUE: unique symbol = Symbol.for('undefined');
 
 export type Value = string | number | null | boolean | undefined;
 export type InternalValue = string | number | null | boolean | typeof UNDEFINED_VALUE;
@@ -68,7 +68,10 @@ export function externalToValue(value: Value): InternalValue {
   return value;
 }
 
-export const Listbox = styled('ul')({
+export const Listbox: StyledComponent<{
+  theme?: Theme;
+  as?: React.ElementType;
+}, React.DetailedHTMLProps<React.HTMLAttributes<HTMLUListElement>, HTMLUListElement>, {}> = styled('ul')({
   minWidth: 180,
   height: '100%',
   borderRadius: 6,

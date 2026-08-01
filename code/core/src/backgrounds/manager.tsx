@@ -5,7 +5,7 @@ import { addons, types } from 'storybook/manager-api';
 import { BackgroundTool } from './components/Tool.tsx';
 import { ADDON_ID } from './constants.ts';
 
-export default addons.register(ADDON_ID, () => {
+const registration: void = addons.register(ADDON_ID, () => {
   if (globalThis?.FEATURES?.backgrounds) {
     addons.add(ADDON_ID, {
       title: 'Backgrounds',
@@ -15,3 +15,5 @@ export default addons.register(ADDON_ID, () => {
     });
   }
 });
+
+export default registration;

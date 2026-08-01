@@ -43,7 +43,7 @@ interface Args {
   [key: string]: any;
 }
 
-export const DEEPLY_EQUAL = Symbol('Deeply equal');
+export const DEEPLY_EQUAL: unique symbol = Symbol('Deeply equal');
 export const deepDiff = (value: any, update: any): any => {
   if (typeof value !== typeof update) {
     return update;
@@ -222,21 +222,21 @@ interface Query {
 
 const queryFromString = memoize(1000)((s?: string): Query => (s !== undefined ? parse(s) : {}));
 
-export const queryFromLocation = (location?: Partial<Location>) => {
+export const queryFromLocation = (location?: Partial<Location>): Query => {
   return queryFromString(location?.search ? location.search.slice(1) : '');
 };
 
-export const stringifyQuery = (query: Query) => {
+export const stringifyQuery = (query: Query): string => {
   const queryStr = stringify(query);
   return queryStr ? '?' + queryStr : '';
 };
 
 type Match = { path: string };
 
-export const getMatch = memoize(1000)((
+export const getMatch: (current: string, target: string | RegExp, startsWith?: any) => Match | null = memoize(1000)((
   current: string,
   target: string | RegExp,
-  startsWith = true
+  startsWith: any = true
 ): Match | null => {
   if (startsWith) {
     if (typeof target !== 'string') {

@@ -8,7 +8,7 @@ import { getComponentIdFromEntry } from './component-id.ts';
  * truth shared by the CSF indexer and the React docgen provider so both agree on which files count
  * as story files. Has no `g` flag, so the shared instance is safe to reuse across `.test()` calls.
  */
-export const STORY_FILE_TEST_REGEXP = /(stories|story)\.(m?js|ts)x?$/;
+export const STORY_FILE_TEST_REGEXP: RegExp = /(stories|story)\.(m?js|ts)x?$/;
 
 function isAttachedDocsEntry(
   entry: IndexEntry

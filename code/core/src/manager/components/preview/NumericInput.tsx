@@ -79,7 +79,7 @@ interface NumericInputProps extends Omit<ComponentProps<typeof Form.Input>, 'val
   baseUnit?: string;
 }
 
-export const NumericInput = forwardRef<HTMLInputElement, NumericInputProps>(function NumericInput(
+export const NumericInput: React.ForwardRefExoticComponent<Omit<NumericInputProps, "ref"> & React.RefAttributes<HTMLInputElement>> = forwardRef<HTMLInputElement, NumericInputProps>(function NumericInput(
   {
     label,
     before,

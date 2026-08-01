@@ -10,7 +10,10 @@ export function getServerAddresses(
   host: string | undefined,
   proto: string,
   initialPath?: string
-) {
+): {
+  address: string;
+  networkAddress: string;
+} {
   const address = new URL(`${proto}://localhost:${port}/`);
   const networkAddress = new URL(`${proto}://${host || getLocalIp()}:${port}/`);
 
@@ -32,7 +35,7 @@ interface PortOptions {
   exactPort?: boolean;
 }
 
-export const getServerPort = (port?: number, { exactPort }: PortOptions = {}) =>
+export const getServerPort = (port?: number, { exactPort }: PortOptions = {}): Promise<number> =>
   detectFreePort(port)
     .catch((error) => {
       logger.error(error);
